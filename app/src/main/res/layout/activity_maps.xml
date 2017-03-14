@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:sample="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MapsActivity"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp">
+
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_height="400dp"
+            android:layout_width="match_parent"
+            tools:context="com.example.hongu.apaapa.MapsActivity"
+            sample:cameraTargetLat="35.025874"
+            sample:cameraTargetLng="135.780865"
+            sample:cameraZoom="15.0"
+            sample:cameraBearing="0.0"
+            sample:cameraTilt="0.0"
+            sample:mapType="normal"
+            sample:uiCompass="true"
+            sample:uiZoomControls="true"
+            sample:uiRotateGestures="true"
+            sample:uiScrollGestures="true"
+            sample:uiTiltGestures="true"
+            android:layout_weight="0.67" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+        <Chronometer
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chronometer"
+            android:format="@string/chronometer_format"
+            android:textSize="34dp"
+            android:layout_toRightOf="@id/map"
+            android:layout_marginLeft="4dp"
+            android:layout_alignBaseline="@+id/map"
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview"
+                android:textSize="35dp"
+                android:text="Distance:"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview1"
+                android:textSize="35dp"
+                android:text="Straight:"
+                 />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/GPS" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <com.example.hongu.apaapa.GraphView
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            class="com.example.hongu.apaapa.GraphView"
+            android:id="@+id/view1"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            sample:x0= "50"
+            sample:y0= "100"
+            sample:vmin= "0"
+            sample:vmax= "1000"
+            sample:unit= "b"
+            sample:title= "Test">
+        </com.example.hongu.apaapa.GraphView>
+
+        <com.example.hongu.apaapa.GraphView
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            class="com.example.hongu.apaapa.GraphView"
+            android:id="@+id/view"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            sample:x0= "100"
+            sample:y0= "100"
+            sample:vmin= "0"
+            sample:vmax= "100"
+            sample:unit= "a"
+            sample:title= "Sample">
+        </com.example.hongu.apaapa.GraphView>
+
+        <TextView
+            android:text="尾翼:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50dp"
+            android:id="@+id/textView2"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <com.example.hongu.apaapa.GraphView
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            class="com.example.hongu.apaapa.GraphView"
+            android:id="@+id/view3"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            sample:x0= "50"
+            sample:y0= "100"
+            sample:vmin= "0"
+            sample:vmax= "1000"
+            sample:unit= "p"
+            sample:title= "PPAP">
+        </com.example.hongu.apaapa.GraphView>
+
+        <com.example.hongu.apaapa.GraphView
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            class="com.example.hongu.apaapa.GraphView"
+            android:id="@+id/view2"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            sample:x0= "50"
+            sample:y0= "100"
+            sample:vmin= "0"
+            sample:vmax= "1000"
+            sample:unit= "c"
+            sample:title= "Great">
+        </com.example.hongu.apaapa.GraphView>
+
+        <com.example.hongu.apaapa.GraphView
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            class="com.example.hongu.apaapa.GraphView"
+            android:id="@+id/view4"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            sample:x0= "50"
+            sample:y0= "100"
+            sample:vmin= "0"
+            sample:vmax= "1000"
+            sample:unit= "kg"
+            sample:title= "Weight">
+        </com.example.hongu.apaapa.GraphView>
+    </LinearLayout>
+
+    <Button
+        android:text="Start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:id="@+id/startbtn" />
+
+</LinearLayout>
