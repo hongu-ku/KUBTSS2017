@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GraphView">
+
+        <attr name="x0" format="integer" />
+        <attr name="y0" format="integer" />
+        <attr name="vmin" format="float" />
+        <attr name="vmax" format="float" />
+        <attr name="unit" format="string" />
+        <attr name="title" format="string" />
+        <attr name="v" format="float" />
+    </declare-styleable>
+
+
+    <attr name="sample_view_test" format="integer|reference" />
+</resources>
