@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -17,11 +18,20 @@ public class GraphView extends View {
     protected int X_SIZE = 270;//GraphSize
     protected int Y_SIZE = 180;//GraphSize
     protected int x0, y0;
-    protected float vmax;
-    protected float vmin;
-    protected float[] value = new float[X_SIZE];
+    protected double vmax;
+    protected double vmin;
+    protected double[] value = new double[X_SIZE];
     protected String unit, title;
-    public float v;
+
+    public double getV() {
+        return v;
+    }
+
+    public void setV(double v) {
+        this.v = v;
+    }
+
+    public double v;
 
     public GraphView(Context context) {
         super(context);
@@ -74,12 +84,36 @@ public class GraphView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.scale(0.9f,0.9f);
-        canvas.translate(10, 50);
-        this.drawOption(canvas);
-        this.drawGraph(v, canvas);
+        canvas.scale(0.7f,0.7f);
+        canvas.translate(10, 30);
+        this.drawText(canvas, v);
+       // this.drawOption(canvas);
+       // this.drawGraph(v, canvas);
     }
 
+    // 見やすいテキスト形式は？
+    public void drawText(Canvas canvas, double v){
+        paint1.setColor(Color.RED);
+        paint1.setStrokeWidth(6);
+        paint1.setTextSize(50);
+        paint1.setStyle(Paint.Style.STROKE);
+        paint1.setAntiAlias(true);
+        paint1.setTextAlign(Paint.Align.RIGHT);
+
+
+        paint2.setColor(Color.BLACK);
+        paint2.setStrokeWidth(8);
+        paint2.setTextSize(200);
+        paint2.setStyle(Paint.Style.FILL_AND_STROKE);
+        paint2.setAntiAlias(true);
+        //paint2.setTextAlign(Paint.Align.CENTER);
+
+        canvas.drawRect(0,0,340,250,paint1);
+        canvas.drawText((int)v+"", 0, 170, paint2);
+        canvas.drawText(unit, 330, 200, paint1);
+    }
+
+    // 今回は使わない可能性が高いが、メーターを使うとき用
     public void drawOption(Canvas canvas) {
 
         paint1.setColor(Color.BLACK);
@@ -114,7 +148,7 @@ public class GraphView extends View {
         canvas.drawArc(rectf, 270, 90, true, paint1);
     }
 
-    public void drawGraph(float v, Canvas canvas) {
+    public void drawGraph(double v, Canvas canvas) {
         //pushMatrix(); //storing current coordinate
         //translate(x0,y0);
         Paint paint2 = new Paint();
@@ -133,7 +167,7 @@ public class GraphView extends View {
         canvas.drawLine(X_SIZE - Y_SIZE, Y_SIZE, (float) _x, (float) _y, paint2);
     }
 
-    public void setValue(int x0, int y0, float vmin, float vmax, String unit, String title){
+    public void setValue(int x0, int y0, double vmin, double vmax, String unit, String title){
         this.x0 = x0;
         this.y0 = y0;
         this.vmin = vmin;
@@ -142,7 +176,7 @@ public class GraphView extends View {
         this.title = title;
     }
 
-    public void setfloat(float a) {
+    public void setfloat(double a) {
         this.v = a;
         invalidate();
     }

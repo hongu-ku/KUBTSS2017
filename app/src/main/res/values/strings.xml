@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">apaapa</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps">honguTest</string>
     <string name="button_text">RESET</string>
     <string name="chronometer_format">%s</string>
     <string name="save_confirm_dialog_title">この走行を記録しますか</string>
@@ -17,5 +17,5 @@
     <string name="speed">時速</string>
     <string name="action_view">一覧</string>
     <string name="action_quit">終了</string>
-    <string name="RED">#ff0000</string>
+    <string name="action_settings">Settings</string>
 </resources>
