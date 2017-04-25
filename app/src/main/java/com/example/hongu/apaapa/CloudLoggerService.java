@@ -57,17 +57,18 @@ public class CloudLoggerService {
     }
 
     public void send() throws Exception {//mainActivityにてthread 管理
+
         while (!dataList.isEmpty()) {
             set();
 
             StringBuilder sb = new StringBuilder();
-            sb.append("data=\"");
+            sb.append("data=");
+
             for (String str : dataList.get(0)) {
                 sb.append(str + ",");
             }
             int index = sb.lastIndexOf(",");
             sb.deleteCharAt(index); //http://yamato-java.blogspot.jp/2011/09/public-class-first-public-static-void.html
-            sb.append("\"");
 
             printStream.print(sb.toString());
             printStream.close();
@@ -83,6 +84,8 @@ public class CloudLoggerService {
             con.disconnect();
             Log.d("CloudLogger#send","---connection was disconnected---");
         }
+        //printStream.flush();
+        //con.disconnect();
     }
 
     public void close() {
