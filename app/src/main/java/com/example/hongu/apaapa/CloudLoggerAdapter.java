@@ -58,7 +58,7 @@ public class CloudLoggerAdapter{
                         @Override
                         public void run() {
                             data = new LinkedList<String>();
-
+//
                             data.add(String.valueOf(Count));
                             data.add(String.valueOf(mReceivedDataAdapter.getTime())); //mbed時間
                             data.add(String.valueOf(mSensorAdapter.getPitch()));
