@@ -61,11 +61,13 @@ public class CloudLoggerService {
             set();
 
             StringBuilder sb = new StringBuilder();
+            sb.append("data=\"");
             for (String str : dataList.get(0)) {
                 sb.append(str + ",");
             }
             int index = sb.lastIndexOf(",");
             sb.deleteCharAt(index); //http://yamato-java.blogspot.jp/2011/09/public-class-first-public-static-void.html
+            sb.append("\"");
 
             printStream.print(sb.toString());
             printStream.close();
