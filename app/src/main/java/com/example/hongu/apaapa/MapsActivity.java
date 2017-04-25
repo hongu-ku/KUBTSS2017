@@ -292,6 +292,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMeter = 0.0;
                     mRunList.clear();
                     f++;
+                    i++;
+                    mCloudLoggerAdapter.setCount(i);
                     startbtn.setText("STOP");
                 } else if (f == 1) {
                     stopChronometer();
@@ -299,7 +301,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mStart = false;
                     // [i].stopRunning();
                     f++;
-                    i++;
+                    mCloudLoggerAdapter.setCount(0);
                     startbtn.setText("RESET");
                 } else {
                     // subThreadSample[i] = new SubThreadSample("a", 10, 10);
@@ -615,7 +617,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         public void run(){
             while(running){
-                // TODO: send()をモバイル通信できないとき、しないようにする(例外処理)
+                // TODO: EXEPTION !!!
 
                 try {
                     mCloudLoggerService.send();//モバイル通信できないときはコメントアウト必須
@@ -630,7 +632,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                    }
 //                });
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     Log.e(TAG, "CloudLoggerSendThread exception");
                 }

@@ -13,6 +13,13 @@ public class CloudLoggerAdapter{
     SensorAdapter mSensorAdapter;
     ReceivedDataAdapter mReceivedDataAdapter;
     CloudLoggerService mCloudLoggerService;
+
+    public void setCount(int count) {
+        Count = count;
+    }
+
+    private int Count;
+
     public CloudLoggerAdapter(SensorAdapter mmSenserAdapter,ReceivedDataAdapter mmReceivedAdapter,CloudLoggerService mmCloudLoggerService){
         mSensorAdapter = mmSenserAdapter;
         mReceivedDataAdapter = mmReceivedAdapter;
@@ -28,10 +35,13 @@ public class CloudLoggerAdapter{
         CloudLoggerService mCloudLoggerService;
         Handler handler = new Handler();
         private boolean running = true;
+
+
         public SetValueThread(SensorAdapter mSensorAdapter, ReceivedDataAdapter mReceivedDataAdapter,CloudLoggerService mCloudLoggerService){
             this.mSensorAdapter = mSensorAdapter;
             this.mReceivedadapter = mReceivedDataAdapter;
             this.mCloudLoggerService = mCloudLoggerService;
+            Count = 0;
         }
         public void start(){
             new Thread(this).start();
@@ -41,43 +51,45 @@ public class CloudLoggerAdapter{
             running = false;
         }
         @Override
-        public void run(){
-            while(running){
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        data = new LinkedList<String>();
+        public void run() {
+            while (running) {
+                while (Count != 0) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            data = new LinkedList<String>();
 
-                        data.add(String.valueOf(mReceivedDataAdapter.getTime())); //mbed時間
-                        data.add(String.valueOf(mSensorAdapter.getPitch()));
-                        data.add(String.valueOf(mSensorAdapter.getYaw()));
-                        data.add(String.valueOf(mSensorAdapter.getRoll()));
-                        data.add(String.valueOf(mSensorAdapter.getLatitude()));
-                        data.add(String.valueOf(mSensorAdapter.getLongitude()));
-                        data.add(String.valueOf(mSensorAdapter.getGpsCnt()));
-                        data.add(String.valueOf(mSensorAdapter.getStraightDistance()));
-                        data.add(String.valueOf(mSensorAdapter.getIntegralDistance()));
-                        data.add(String.valueOf(mReceivedDataAdapter.getElevator()));//水平サーボ
-                        data.add(String.valueOf(mReceivedDataAdapter.getRudder()));//垂直サーボ
-                        data.add(String.valueOf(mReceivedDataAdapter.getTrim()));//水平トリム
-                        data.add(String.valueOf(mReceivedDataAdapter.getCadence()));//RPM足元回転数
-                        data.add(String.valueOf(mReceivedDataAdapter.getUltsonic()));//超音波(cm)200cmくらいまでの精度
-                        data.add(String.valueOf(mReceivedDataAdapter.getAtmpress()));//hPa
-                        data.add(String.valueOf(mReceivedDataAdapter.getSelector()));
-                        data.add(String.valueOf(mReceivedDataAdapter.getCadencevolt()));
-                        data.add(String.valueOf(mReceivedDataAdapter.getUltsonicvolt()));
-                        data.add(String.valueOf(mReceivedDataAdapter.getServovolt()));
+                            data.add(String.valueOf(Count));
+                            data.add(String.valueOf(mReceivedDataAdapter.getTime())); //mbed時間
+                            data.add(String.valueOf(mSensorAdapter.getPitch()));
+                            data.add(String.valueOf(mSensorAdapter.getYaw()));
+                            data.add(String.valueOf(mSensorAdapter.getRoll()));
+                            data.add(String.valueOf(mSensorAdapter.getLatitude()));
+                            data.add(String.valueOf(mSensorAdapter.getLongitude()));
+                            data.add(String.valueOf(mSensorAdapter.getGpsCnt()));
+                            data.add(String.valueOf(mSensorAdapter.getStraightDistance()));
+                            data.add(String.valueOf(mSensorAdapter.getIntegralDistance()));
+                            data.add(String.valueOf(mReceivedDataAdapter.getElevator()));//水平サーボ
+                            data.add(String.valueOf(mReceivedDataAdapter.getRudder()));//垂直サーボ
+                            data.add(String.valueOf(mReceivedDataAdapter.getTrim()));//水平トリム
+                            data.add(String.valueOf(mReceivedDataAdapter.getCadence()));//RPM足元回転数
+                            data.add(String.valueOf(mReceivedDataAdapter.getUltsonic()));//超音波(cm)200cmくらいまでの精度
+                            data.add(String.valueOf(mReceivedDataAdapter.getAtmpress()));//hPa
+                            data.add(String.valueOf(mReceivedDataAdapter.getSelector()));
+                            data.add(String.valueOf(mReceivedDataAdapter.getCadencevolt()));
+                            data.add(String.valueOf(mReceivedDataAdapter.getUltsonicvolt()));
+                            data.add(String.valueOf(mReceivedDataAdapter.getServovolt()));
 
-
-                        ///////
-                        mCloudLoggerService.bufferedWrite(data);
-                        Log.d("TAG", "buffer write");
+                            ///////
+                            mCloudLoggerService.bufferedWrite(data);
+                            Log.d("TAG", "buffer write");
+                        }
+                    });
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        Log.e("TAG", "SetValueThread exception");
                     }
-                });
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    Log.e("TAG", "SetValueThread exception");
                 }
             }
         }
