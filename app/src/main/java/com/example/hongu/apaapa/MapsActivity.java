@@ -632,7 +632,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                    }
 //                });
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     Log.e(TAG, "CloudLoggerSendThread exception");
                 }

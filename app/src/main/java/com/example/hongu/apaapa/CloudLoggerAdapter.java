@@ -91,6 +91,11 @@ public class CloudLoggerAdapter{
                         Log.e("TAG", "SetValueThread exception");
                     }
                 }
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    Log.e("TAG", "SetValueThread exception");
+                }
             }
         }
 
