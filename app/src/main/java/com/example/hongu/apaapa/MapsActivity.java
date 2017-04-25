@@ -226,6 +226,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .addApi(LocationServices.API)
                 .build();
 
+
+
         if (Build.VERSION.SDK_INT >= 19) {
             Log.i(TAG, "getExternalFilesDirを呼び出します");
             File[] extDirs = getExternalFilesDirs(Environment.DIRECTORY_DOWNLOADS);
@@ -301,6 +303,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mStart = false;
                     // [i].stopRunning();
                     f++;
+                    i=0;
                     mCloudLoggerAdapter.setCount(0);
                     startbtn.setText("RESET");
                 } else {
@@ -616,21 +619,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         @Override
         public void run(){
-            while(running){
-                // TODO: EXEPTION !!!
+            while(running) {
+                while (i != 0) {
+                    // TODO: EXEPTION !!!
 
-                try {
-                    mCloudLoggerService.send();//モバイル通信できないときはコメントアウト必須
-                } catch (Exception e) {
+                    try {
+                        mCloudLoggerService.send();//モバイル通信できないときはコメントアウト必須
+                    } catch (Exception e) {
 
-                    e.printStackTrace();
-                }
+                        e.printStackTrace();
+                    }
 //                handler.post(new Runnable() {
 //                    @Override
 //                    public void run() {
 //
 //                    }
 //                });
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        Log.e(TAG, "CloudLoggerSendThread exception");
+                    }
+                }
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -705,6 +715,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+
+        // MyLocationレイヤーを有効に
+        //mMap.setMyLocationEnabled(true);
+        // MyLocationButtonを有効に
+        UiSettings settings = mMap.getUiSettings();
+        settings.setMyLocationButtonEnabled(true);
 //        UiSettings settings = mMap.getUiSettings();
 //
 //        settings.setCompassEnabled(true);
