@@ -354,6 +354,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             SensorManager.AXIS_Z,  // デバイスy軸が地球の何軸になるか
                             outR );
                     // 姿勢を得る
+                    // TODO: 回転行列(>_<)
 
                     SensorManager.getOrientation(
                             outR,
@@ -717,7 +718,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         // MyLocationレイヤーを有効に
-        //mMap.setMyLocationEnabled(true);
+        mMap.setMyLocationEnabled(true);
         // MyLocationButtonを有効に
         UiSettings settings = mMap.getUiSettings();
         settings.setMyLocationButtonEnabled(true);
