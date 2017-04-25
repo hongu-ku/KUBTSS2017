@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class CloudLoggerService {
         //Set();
     }
 
-    public void set() {
+    public void set () throws Exception {
         try {
             con = (HttpURLConnection) Url.openConnection();
 
@@ -45,9 +46,8 @@ public class CloudLoggerService {
             con.setRequestProperty("Content-Type", "text/plain");
 
             printStream = new PrintStream(con.getOutputStream());
-            Log.d("CloudLogger#Set","---connection was created---");
-
-        } catch (IOException e) {
+            Log.d("CloudLogger#Set", "---connection was created---");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -56,7 +56,7 @@ public class CloudLoggerService {
         dataList.add(data);
     }
 
-    public void send() {//mainActivityにてthread 管理
+    public void send() throws Exception {//mainActivityにてthread 管理
         while (!dataList.isEmpty()) {
             set();
 
@@ -75,7 +75,7 @@ public class CloudLoggerService {
                     Log.d("CloudLogger#send","remove " + dataList.get(0).get(0));
                     dataList.remove(0);
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             con.disconnect();

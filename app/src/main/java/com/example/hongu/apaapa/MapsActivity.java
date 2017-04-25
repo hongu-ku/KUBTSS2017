@@ -63,7 +63,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.*;
@@ -615,7 +617,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             while(running){
                 // TODO: send()をモバイル通信できないとき、しないようにする(例外処理)
 
-                //mCloudLoggerService.send();//モバイル通信できないときはコメントアウト必須
+                try {
+                    mCloudLoggerService.send();//モバイル通信できないときはコメントアウト必須
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
 //                handler.post(new Runnable() {
 //                    @Override
 //                    public void run() {
