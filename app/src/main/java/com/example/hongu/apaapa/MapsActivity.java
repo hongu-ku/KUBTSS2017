@@ -636,7 +636,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                    }
 //                });
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         Log.e(TAG, "CloudLoggerSendThread exception");
                     }
@@ -666,7 +666,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         System.out.println("スレッド終了");
         mTextSensorViewThread.stopRunning();
         mCloudLoggerSendThread.stopRunning();
-        mCloudLoggerAdapter.stoplogger();
+        //mCloudLoggerAdapter.stoplogger();
         sound.release();
         mReceivedDataAdapter.stop();
         mSensorAdapter.stopSensor();
