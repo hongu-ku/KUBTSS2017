@@ -60,7 +60,7 @@ public class CloudLoggerAdapter{
                         @Override
                         public void run() {
                             data = new LinkedList<String>();
-//
+
                             data.add(String.valueOf(Count));
                             data.add(String.valueOf(mReceivedDataAdapter.getTime())); //mbed時間
                             data.add(String.valueOf(mSensorAdapter.getPitch()));
@@ -88,7 +88,7 @@ public class CloudLoggerAdapter{
                         }
                     });
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(300);
                     } catch (InterruptedException e) {
                         Log.e("TAG", "SetValueThread exception");
                     }

@@ -62,7 +62,6 @@ public class CloudLoggerService {
             set();
 
             StringBuilder sb = new StringBuilder();
-            sb.append("data=");
 
             for (String str : dataList.get(0)) {
                 sb.append(str + ",");
