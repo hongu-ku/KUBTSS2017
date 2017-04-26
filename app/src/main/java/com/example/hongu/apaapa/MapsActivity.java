@@ -667,7 +667,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         System.out.println("スレッド終了");
         mTextSensorViewThread.stopRunning();
         mCloudLoggerSendThread.stopRunning();
-
+        mCloudLoggerAdapter.stoplogger();
         sound.release();
         mReceivedDataAdapter.stop();
         mSensorAdapter.stopSensor();

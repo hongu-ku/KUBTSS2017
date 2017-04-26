@@ -13,6 +13,7 @@ public class CloudLoggerAdapter{
     SensorAdapter mSensorAdapter;
     ReceivedDataAdapter mReceivedDataAdapter;
     CloudLoggerService mCloudLoggerService;
+    private boolean running;
 
     public void setCount(int count) {
         Count = count;
@@ -34,7 +35,7 @@ public class CloudLoggerAdapter{
         ReceivedDataAdapter mReceivedadapter;
         CloudLoggerService mCloudLoggerService;
         Handler handler = new Handler();
-        private boolean running = true;
+
 
 
         public SetValueThread(SensorAdapter mSensorAdapter, ReceivedDataAdapter mReceivedDataAdapter,CloudLoggerService mCloudLoggerService){
@@ -42,6 +43,7 @@ public class CloudLoggerAdapter{
             this.mReceivedadapter = mReceivedDataAdapter;
             this.mCloudLoggerService = mCloudLoggerService;
             Count = 0;
+            running = true;
         }
         public void start(){
             new Thread(this).start();
@@ -100,4 +102,9 @@ public class CloudLoggerAdapter{
         }
 
     }
+    public void stoplogger() {
+        Count = 0;
+        running = false;
+    }
+
 }
