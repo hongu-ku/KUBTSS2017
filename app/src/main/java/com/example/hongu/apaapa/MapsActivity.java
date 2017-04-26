@@ -35,6 +35,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.CompoundButton;
+import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -120,6 +121,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Chronometer mChronometer;
     private int f = 0;
     private int i = 0;
+    private int val = 1;
 
     private double Kyotolat = 35.025874;
     private double Kyotolnt = 135.780865;
@@ -217,6 +219,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         initSensor();
         testView = (TestView) findViewById(R.id.view5);
+        // NumberPicker 設定
+        final NumberPicker numberPicker = (NumberPicker)findViewById(R.id.numberPicker);
+        numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+
+// 最大、最小を設定
+        numberPicker.setMaxValue(40);
+        numberPicker.setMinValue(1);
+        numberPicker.setValue(val);
+
+// 値を取得
+        //val = numberPicker.getValue();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);  // スリープ抑制
 
@@ -278,6 +291,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         final Button startbtn = (Button) findViewById(R.id.startbtn);
 
+        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                val = newVal;
+                System.out.println("debug:"+val);
+            }
+        });
+
 //        tb.setChecked(false);
 
         //ボタンが押された時の動き
@@ -294,20 +315,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMeter = 0.0;
                     mRunList.clear();
                     f++;
-                    i++;
-                    mCloudLoggerAdapter.setCount(i);
+                    i=val;
+                    //val = numberPicker.getValue();
+                    mCloudLoggerAdapter.setCount(val);
                     startbtn.setText("STOP");
+                    Toast.makeText(getApplicationContext(),""+val, Toast.LENGTH_SHORT).show();
                 } else if (f == 1) {
                     stopChronometer();
                     mStop = true;
                     mStart = false;
                     // [i].stopRunning();
                     f++;
+                    i = 0;
                     mCloudLoggerAdapter.setCount(0);
                     startbtn.setText("RESET");
                 } else {
                     // subThreadSample[i] = new SubThreadSample("a", 10, 10);
                     f = 0;
+                    val++;
+                    numberPicker.setValue(val);
                     startbtn.setText("START");
                     TextView disText = (TextView) findViewById(R.id.textview);
                     TextView straightText = (TextView) findViewById(R.id.textview1);

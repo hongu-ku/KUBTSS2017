@@ -136,7 +136,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="182dp">
 
             <com.example.hongu.apaapa.GraphView
                 android:layout_width="190dp"
@@ -210,7 +210,7 @@
         <Button
         android:text="Start"
         android:layout_width="349dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:textSize="30dp"
         android:id="@+id/startbtn" />
 
@@ -218,6 +218,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/numberPicker"
+            android:textSize="80dp"
             android:layout_weight="1" />
 
 
