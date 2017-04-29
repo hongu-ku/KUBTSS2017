@@ -127,6 +127,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double Kyotolnt = 135.780865;
     SensorManager sensorManager;
     float[] rotationMatrix = new float[9];
+    float[] rot = new float[9];
     float[] gravity = new float[3];
     float[] geomagnetic = new float[3];
     float[] attitude = new float[3];
@@ -346,6 +347,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE );
 
         mSensorEventListener = new SensorEventListener()
@@ -365,16 +367,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if( fAccell != null && fMagnetic != null ) {
                     // 回転行列を得る
                     float[] inR = new float[9];
+                    float deg = testView.getPitch1();
+                    double rad = Math.toRadians(deg);
+
+                    float sin = (float) Math.sin(rad);
+                    float cos = (float) Math.cos(rad);
+
+                    rot[0] = 1;
+                    rot[1] = 0;
+                    rot[2] = 0;
+                    rot[3] = 0;
+                    rot[4] = cos;
+                    rot[5] = -sin;
+                    rot[6] = 0;
+                    rot[7] = sin;
+                    rot[8] = cos;
+
 
                     SensorManager.getRotationMatrix(
                             inR,
                             null,
                             fAccell,
                             fMagnetic );
+
+                    float[] ininR = new float[9];
+
+                    ininR[0] = inR[0]*rot[0] + inR[1]*rot[3] + inR[2]*rot[6];
+                    ininR[1] = inR[0]*rot[1] + inR[1]*rot[4] + inR[2]*rot[7];
+                    ininR[2] = inR[0]*rot[2] + inR[1]*rot[5] + inR[2]*rot[8];
+                    ininR[3] = inR[3]*rot[0] + inR[4]*rot[3] + inR[5]*rot[6];
+                    ininR[4] = inR[3]*rot[1] + inR[4]*rot[4] + inR[5]*rot[7];
+                    ininR[5] = inR[3]*rot[2] + inR[4]*rot[5] + inR[5]*rot[8];
+                    ininR[6] = inR[6]*rot[0] + inR[7]*rot[3] + inR[8]*rot[6];
+                    ininR[7] = inR[6]*rot[1] + inR[7]*rot[4] + inR[8]*rot[7];
+                    ininR[8] = inR[6]*rot[2] + inR[7]*rot[5] + inR[8]*rot[8];
+
+
                     // ワールド座標とデバイス座標のマッピングを変換する
                     float[] outR = new float[9];
                     SensorManager.remapCoordinateSystem(
-                            inR,
+                            ininR,
                             SensorManager.AXIS_X,  // デバイスx軸が地球の何軸になるか
                             SensorManager.AXIS_Z,  // デバイスy軸が地球の何軸になるか
                             outR );
@@ -419,8 +451,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     //float Yaw = fAttitude[0];
 
                     // 正面に置く場合
-                    testView.setYaw1(rad2deg( fAttitude[2] ));
-                    testView.setPitch1(rad2deg( fAttitude[1] ));
+                    testView.setYaw(rad2deg( fAttitude[2] ));
+                    testView.setPitch(rad2deg( fAttitude[1] ));
 
 //                    // 左に置く場合
 //                    testView.Yaw = -rad2deg( fAttitude[1] );
@@ -650,7 +682,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // TODO: EXEPTION !!!
 
                     try {
-                        mCloudLoggerService.send();//モバイル通信できないときはコメントアウト必須
+                        mCloudLoggerService.send();
                     } catch (Exception e) {
 
                         e.printStackTrace();
@@ -728,7 +760,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // 長押しのリスナーをセット
-        // TODO: マーカーが表示される前に長押しして落ちないようにする
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng longpushLocation) {
@@ -736,8 +767,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     CameraPosition cameraPosition = new CameraPosition.Builder()
                             .target(latlng).zoom(15).bearing(0).build();
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                } catch (Exception e) {
+                } catch (NullPointerException e) {
                     // do nothing
+                    e.printStackTrace();
                 }
             }
         });

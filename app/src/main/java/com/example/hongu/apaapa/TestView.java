@@ -27,6 +27,15 @@ public class TestView extends View {
     private Paint mPaint = new Paint();
     private Paint paint = new Paint();
     private Paint paint1 = new Paint();
+
+    public void setPitch(float pitch) {
+        Pitch = pitch;
+    }
+
+    public void setYaw(float yaw) {
+        Yaw = yaw;
+    }
+
     public float Pitch = 0;
     public float Yaw = 0;
 
@@ -39,7 +48,12 @@ public class TestView extends View {
     }
 
     private float Yaw1 = 0;
-    private float Pitch1 = 0;
+
+    public float getPitch1() {
+        return Pitch1;
+    }
+
+    private float Pitch1 = 30;
 
     private int deg10 = 10;
     private int deg20 = 20;
@@ -72,8 +86,6 @@ public class TestView extends View {
         paint1.setColor(Color.RED);
 
         CircleDraw(canvas);
-
-
     }
 
     private void CircleDraw(Canvas canvas) {
@@ -84,7 +96,7 @@ public class TestView extends View {
         canvas.save();
 
 //        回転する場所の描画
-        canvas.rotate( -Yaw1 );
+        canvas.rotate( -Yaw );
         canvas.drawLine(0,-150,0,150,paint1);
         canvas.drawLine(-100,0,100,0,mPaint);
         canvas.drawLine(-75,-50,75,-50,mPaint);
@@ -93,11 +105,11 @@ public class TestView extends View {
         //canvas.drawRect(rect, mPaint);
 //        canvas.save();
 //        これ以降は前後する場所の描画
-        if((Pitch - Pitch1) * 3 <=150 && (Pitch - Pitch1) * 3 >= -150)
-            canvas.translate(0, (Pitch - Pitch1) * 3 );
-        else if ((Pitch - Pitch1) * 3 > 150)
+        if((Pitch1 - Pitch) * 4 <=150 && (Pitch1 - Pitch) * 4 >= -150)
+            canvas.translate(0, (Pitch1 - Pitch) * 4 );
+        else if ((Pitch1 - Pitch) * 4 > 150)
             canvas.translate(0, 150);
-        else if ((Pitch - Pitch1) * 3 < -150)
+        else if ((Pitch1 - Pitch) * 4 < -150)
             canvas.translate(0,-150);
         canvas.drawLine(-100,0,100,0,paint1);
 
