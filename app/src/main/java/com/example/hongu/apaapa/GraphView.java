@@ -200,7 +200,7 @@ public class GraphView extends View {
                     v++;
                     sleep(200);
                 } catch (Exception e) {
-                    // TODO 自動生成された catch ブロック
+                    // 自動生成された catch ブロック
                     e.printStackTrace();
                 }
             }
