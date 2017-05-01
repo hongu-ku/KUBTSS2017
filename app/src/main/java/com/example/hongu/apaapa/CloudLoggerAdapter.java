@@ -61,7 +61,7 @@ public class CloudLoggerAdapter{
                         public void run() {
                             data = new LinkedList<String>();
 
-                            data.add(String.valueOf(Count));
+                            mCloudLoggerService.setCount(Count);
                             data.add(String.valueOf(mReceivedDataAdapter.getTime())); //mbed時間
                             data.add(String.valueOf(mSensorAdapter.getPitch()));
                             data.add(String.valueOf(mSensorAdapter.getYaw()));

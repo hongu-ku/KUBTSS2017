@@ -19,6 +19,7 @@ public class CloudLoggerService {
     private PrintStream printStream;
     private List<LinkedList<String>> dataList;
     private URL Url;
+    private int count;
 
     public CloudLoggerService(String url) {
         dataList = new LinkedList<LinkedList<String>>();
@@ -52,6 +53,10 @@ public class CloudLoggerService {
         }
     }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     public void bufferedWrite(LinkedList<String> data) {
         dataList.add(data);
     }
@@ -63,28 +68,36 @@ public class CloudLoggerService {
 
             StringBuilder sb = new StringBuilder();
 
-            for (String str : dataList.get(0)) {
-                sb.append(str + ",");
+            int size = dataList.size();
+
+            sb.append(count + ",");
+
+            for (int i = 0; i < size; i ++) {
+                for (Object str : dataList.get(i)) {
+                    sb.append(str + ",");
+                }
+                sb.append("\n");
+                sb.deleteCharAt(sb.lastIndexOf(","));
             }
-            int index = sb.lastIndexOf(",");
-            sb.deleteCharAt(index); //http://yamato-java.blogspot.jp/2011/09/public-class-first-public-static-void.html
+
+             //http://yamato-java.blogspot.jp/2011/09/public-class-first-public-static-void.html
 
             printStream.print(sb.toString());
-            printStream.close();
+            printStream.flush();
             try {
                 if (con.getResponseMessage().equals("OK")) {
-                    Log.d("CloudLogger#send","send " + dataList.get(0).get(0));
-                    Log.d("CloudLogger#send","remove " + dataList.get(0).get(0));
-                    dataList.remove(0);
+                    for (int i = 0; i < size; i ++) {
+                        Log.d("CloudLogger#send", "send " + dataList.get(0).get(0));
+                        Log.d("CloudLogger#send", "remove " + dataList.get(0).get(0));
+                        dataList.remove(0);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            con.disconnect();
+            close();
             Log.d("CloudLogger#send","---connection was disconnected---");
         }
-        //printStream.flush();
-        //con.disconnect();
     }
 
     public void close() {
