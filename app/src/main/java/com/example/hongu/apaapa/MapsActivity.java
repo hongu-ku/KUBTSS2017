@@ -367,7 +367,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if( fAccell != null && fMagnetic != null ) {
                     // 回転行列を得る
                     float[] inR = new float[9];
-                    float deg = testView.getPitch1();
+                    float deg = testView.getPitch();
                     double rad = Math.toRadians(deg);
 
                     float sin = (float) Math.sin(rad);
@@ -486,6 +486,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                }
 //            }
 //        });
+        testView.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View v) {
+                testView.setPitch1(testView.getPitch());
+                System.out.println("debug " + testView.getPitch1());
+                testView.invalidate();
+                return true; //trueの場合はonClickListenerを返さない？
+            }
+        });
 
 
     }

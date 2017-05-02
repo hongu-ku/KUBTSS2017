@@ -36,8 +36,20 @@ public class TestView extends View {
         Yaw = yaw;
     }
 
-    public float Pitch = 0;
-    public float Yaw = 0;
+    public float getPitch() {
+        return Pitch;
+    }
+
+    public float getYaw() {
+        return Yaw;
+    }
+
+    public float getYaw1() {
+        return Yaw1;
+    }
+
+    private float Pitch = 0;
+    private float Yaw = 0;
 
     public void setPitch1(float pitch1) {
         Pitch1 = pitch1;
