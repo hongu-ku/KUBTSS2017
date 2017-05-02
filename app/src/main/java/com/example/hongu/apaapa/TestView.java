@@ -121,4 +121,10 @@ public class TestView extends View {
         canvas.drawLine(-155 * sin20, -155 * cos20, -145 * sin20, -145 * cos20, mPaint);
         canvas.drawLine(155 * sin20, -155 * cos20, 145 * sin20, -145 * cos20, mPaint);
     }
+
+    @Override
+    public void setOnLongClickListener(OnLongClickListener l) {
+        super.setOnLongClickListener(l);
+        this.setPitch1(this.Pitch);
+    }
 }
