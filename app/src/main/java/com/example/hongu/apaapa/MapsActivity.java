@@ -367,11 +367,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if( fAccell != null && fMagnetic != null ) {
                     // 回転行列を得る
                     float[] inR = new float[9];
-                    float deg = testView.getPitch();
+
+                    float[] save = new float[3];
+
+                    for (int i = 0; i < 3; i++)
+                        save[i] = 0;
+
+                    float deg = rad2deg( save[1]);
                     double rad = Math.toRadians(deg);
 
                     float sin = (float) Math.sin(rad);
                     float cos = (float) Math.cos(rad);
+
+
 
                     rot[0] = 1;
                     rot[1] = 0;
@@ -417,6 +425,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             outR,
                             fAttitude );
 
+                    save = fAttitude;
+
 //                    String buf =
 //                            "---------- Orientation --------\n" +
 //                                    String.format( "方位角\n\t%f\n", rad2deg( fAttitude[0] )) +
@@ -436,7 +446,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                                    String.format( "左右の傾斜\n\t%f\n", rad2deg( fMagnetic[2] ));
 
 //                    setValue(mSensorAdapter.getYaw(), mSensorAdapter.getRoll(), mSensorAdapter.getPitch());
-//                    String bush ="---------- Orientation --------\n" +
+//                    String bush =
+//                              "---------- Orientation --------\n" +
 //                            String.format( "Yaw:\n\t%f\n", yaw) +
 //                            String.format( "Roll:\n\t%f\n", roll) +
 //                            String.format( "Pitch:\n\t%f\n", pitch);
