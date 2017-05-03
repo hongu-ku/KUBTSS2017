@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/KUBTSS2017.iml" filepath="$PROJECT_DIR$/KUBTSS2017.iml" />
-      <module fileurl="file://$PROJECT_DIR$/apaapa.iml" filepath="$PROJECT_DIR$/apaapa.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
