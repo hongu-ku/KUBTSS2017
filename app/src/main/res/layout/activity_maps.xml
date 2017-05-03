@@ -228,15 +228,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:weightSum="1">
 
         <view
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="262dp"
+            android:layout_height="261dp"
             class="com.example.hongu.apaapa.TestView"
             android:id="@+id/view5"
             android:layout_marginLeft="160dp"
-            android:layout_marginTop="380dp"/>
+            android:layout_marginTop="380dp" />
 
     </LinearLayout>
 </FrameLayout>
