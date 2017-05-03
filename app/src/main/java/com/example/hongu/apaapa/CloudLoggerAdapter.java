@@ -74,6 +74,7 @@ public class CloudLoggerAdapter{
                             data.add(String.valueOf(mReceivedDataAdapter.getElevator()));//水平サーボ
                             data.add(String.valueOf(mReceivedDataAdapter.getRudder()));//垂直サーボ
                             data.add(String.valueOf(mReceivedDataAdapter.getTrim()));//水平トリム
+                            data.add(String.valueOf(mReceivedDataAdapter.getAirspeed()));//気速
                             data.add(String.valueOf(mReceivedDataAdapter.getCadence()));//RPM足元回転数
                             data.add(String.valueOf(mReceivedDataAdapter.getUltsonic()));//超音波(cm)200cmくらいまでの精度
                             data.add(String.valueOf(mReceivedDataAdapter.getAtmpress()));//hPa
