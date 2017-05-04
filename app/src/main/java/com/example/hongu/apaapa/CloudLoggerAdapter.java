@@ -21,6 +21,12 @@ public class CloudLoggerAdapter{
 
     private int Count;
 
+    public void setPitchneu(float pitchneu) {
+        Pitchneu = pitchneu;
+    }
+
+    private float Pitchneu;
+
     public CloudLoggerAdapter(SensorAdapter mmSenserAdapter,ReceivedDataAdapter mmReceivedAdapter,CloudLoggerService mmCloudLoggerService){
         mSensorAdapter = mmSenserAdapter;
         mReceivedDataAdapter = mmReceivedAdapter;
@@ -63,7 +69,7 @@ public class CloudLoggerAdapter{
 
                             mCloudLoggerService.setCount(Count);
                             data.add(String.valueOf(mReceivedDataAdapter.getTime())); //mbed時間
-                            data.add(String.valueOf(mSensorAdapter.getPitch()));
+                            data.add(String.valueOf(mSensorAdapter.getPitch() - Pitchneu));
                             data.add(String.valueOf(mSensorAdapter.getYaw()));
                             data.add(String.valueOf(mSensorAdapter.getRoll()));
                             data.add(String.valueOf(mSensorAdapter.getLatitude()));

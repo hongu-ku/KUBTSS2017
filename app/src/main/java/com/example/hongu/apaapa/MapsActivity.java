@@ -134,6 +134,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     TestView testView;
     LatLng latlng;
 
+    float Pitchneu = 0;
+    float[] save = new float[3];
+
+
+
 
     double roll,switching,yaw,pitch,ultsonic;
 
@@ -350,6 +355,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE );
 
+        for (int i = 0; i < 3; i++)
+            save[i] = 0;
+
         mSensorEventListener = new SensorEventListener()
         {
             public void onSensorChanged (SensorEvent event) {
@@ -368,10 +376,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // 回転行列を得る
                     float[] inR = new float[9];
 
-                    float[] save = new float[3];
 
-                    for (int i = 0; i < 3; i++)
-                        save[i] = 0;
 
                     float deg = rad2deg( save[1]);
                     double rad = Math.toRadians(deg);
@@ -500,6 +505,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         testView.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
                 testView.setPitch1(testView.getPitch());
+                Pitchneu = testView.getPitch1();
                 System.out.println("debug " + testView.getPitch1());
                 testView.invalidate();
                 return true; //trueの場合はonClickListenerを返さない？
@@ -701,6 +707,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // TODO: EXEPTION !!!
 
                     try {
+                        mCloudLoggerAdapter.setPitchneu(Pitchneu);
                         mCloudLoggerService.send();
                     } catch (Exception e) {
 
