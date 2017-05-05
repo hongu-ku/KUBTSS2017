@@ -117,11 +117,11 @@ public class TestView extends View {
         //canvas.drawRect(rect, mPaint);
 //        canvas.save();
 //        これ以降は前後する場所の描画
-        if(Pitch * 4 <=150 && Pitch * 4 >= -150)
-            canvas.translate(0, Pitch * 4 );
-        else if (Pitch * 4 > 150)
+        if(-Pitch * 4 <=150 && -Pitch * 4 >= -150)
+            canvas.translate(0, - Pitch * 4 );
+        else if (-Pitch * 4 > 150)
             canvas.translate(0, 150);
-        else if  (Pitch * 4 < -150)
+        else if  (-Pitch * 4 < -150)
             canvas.translate(0,-150);
         canvas.drawLine(-100,0,100,0,paint1);
 

@@ -154,6 +154,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     float[] fAttitude = new float[3];
+    float[] oridinalAttitude = new float[3];
 
     private float[] fAccell = null;
     private float[] fMagnetic = null;
@@ -430,7 +431,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             ininR,
                             fAttitude );
 
-                    save = fAttitude;
+                    SensorManager.getOrientation(
+                            outR,
+                            oridinalAttitude );
+
 
 //                    String buf =
 //                            "---------- Orientation --------\n" +
@@ -504,7 +508,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        });
         testView.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
-                testView.setsetPitch1();
+                testView.setPitch1(rad2deg(oridinalAttitude[1]));
                 Pitchneu = testView.getPitch1();
                 System.out.println("debug " + testView.getPitch1());
                 testView.invalidate();
