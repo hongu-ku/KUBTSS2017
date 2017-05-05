@@ -405,8 +405,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     float[] ininR = new float[9];
 
-
-
                     // ワールド座標とデバイス座標のマッピングを変換する
                     float[] outR = new float[9];
                     SensorManager.remapCoordinateSystem(
@@ -509,7 +507,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         testView.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
                 testView.setPitch1(rad2deg(oridinalAttitude[1]));
-                Pitchneu = testView.getPitch1();
+                Pitchneu = oridinalAttitude[1];
+                mSensorAdapter.setPitchneutral(Pitchneu);
                 System.out.println("debug " + testView.getPitch1());
                 testView.invalidate();
                 return true; //trueの場合はonClickListenerを返さない？

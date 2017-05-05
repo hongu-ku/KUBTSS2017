@@ -69,7 +69,8 @@ public class CloudLoggerAdapter{
 
                             mCloudLoggerService.setCount(Count);
                             data.add(String.valueOf(mReceivedDataAdapter.getTime())); //mbed時間
-                            data.add(String.valueOf(mSensorAdapter.getPitch() - Pitchneu));
+                            data.add(String.valueOf(mSensorAdapter.getPitch()));
+                            //System.out.println("Pitch:" + mSensorAdapter.getPitch());
                             data.add(String.valueOf(mSensorAdapter.getYaw()));
                             data.add(String.valueOf(mSensorAdapter.getRoll()));
                             data.add(String.valueOf(mSensorAdapter.getLatitude()));

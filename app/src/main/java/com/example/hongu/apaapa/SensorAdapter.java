@@ -72,6 +72,21 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
     public double getSpeed(){return speed;}
     public double getAltitude(){return altitude;}
 
+    float deg;
+    double rad;
+    float[] ininR = new float[9];
+
+    float sin;
+    float cos;
+
+    float[] rot = new float[9];
+
+    public void setPitchneutral(float pitchneu) {
+        Pitchneutral = pitchneu;
+    }
+
+    private float Pitchneutral = 0;
+
     public int getGpsCnt(){return gpsCnt;}
     public int getTestCnt(){
         testCnt++;
@@ -156,7 +171,25 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
         }
         if (magneticValues != null && accelerometerValues != null) {
 
-            SensorManager.getRotationMatrix(inR, I, accelerometerValues, magneticValues);
+            rad = Pitchneutral;
+
+
+            sin = (float) Math.sin(rad);
+            cos = (float) Math.cos(rad);
+            //System.out.println("rad="+sin);
+
+
+            rot[0] = 1;
+            rot[1] = 0;
+            rot[2] = 0;
+            rot[3] = 0;
+            rot[4] = cos;
+            rot[5] = -sin;
+            rot[6] = 0;
+            rot[7] = sin;
+            rot[8] = cos;
+
+            SensorManager.getRotationMatrix(inR, null, accelerometerValues, magneticValues);
 
             //remapCoordinateSystem(inR, deviceX, deviceY, outR); deviceXにworldX，deviceYにworldYを入れる
             /*
@@ -174,7 +207,27 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
             //SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_X, SensorManager.AXIS_MINUS_Y, outR);//上ボート取付縦表示
             //SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_X, SensorManager.AXIS_Y, outR);//下ボート取付縦表示
 
-            SensorManager.getOrientation(outR, orientationValues);
+
+
+            ininR[0] = outR[0]*rot[0] + outR[1]*rot[3] + outR[2]*rot[6];
+            ininR[1] = outR[0]*rot[1] + outR[1]*rot[4] + outR[2]*rot[7];
+            ininR[2] = outR[0]*rot[2] + outR[1]*rot[5] + outR[2]*rot[8];
+            ininR[3] = outR[3]*rot[0] + outR[4]*rot[3] + outR[5]*rot[6];
+            ininR[4] = outR[3]*rot[1] + outR[4]*rot[4] + outR[5]*rot[7];
+            ininR[5] = outR[3]*rot[2] + outR[4]*rot[5] + outR[5]*rot[8];
+            ininR[6] = outR[6]*rot[0] + outR[7]*rot[3] + outR[8]*rot[6];
+            ininR[7] = outR[6]*rot[1] + outR[7]*rot[4] + outR[8]*rot[7];
+            ininR[8] = outR[6]*rot[2] + outR[7]*rot[5] + outR[8]*rot[8];
+
+            for(int i=0; i<9; i++) {
+                System.out.println("outR["+i+"]: " + outR[i]);
+                System.out.println("ininR["+i+"]: " + ininR[i]);
+            }
+
+
+
+
+            SensorManager.getOrientation(ininR, orientationValues);
 
             if(saveCount == 4) {
                 postureLogger.appendData(
