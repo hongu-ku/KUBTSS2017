@@ -378,7 +378,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-                    float deg = rad2deg( save[1]);
+                    float deg = rad2deg( save[1] ) ;
                     double rad = Math.toRadians(deg);
 
                     float sin = (float) Math.sin(rad);
@@ -419,7 +419,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // ワールド座標とデバイス座標のマッピングを変換する
                     float[] outR = new float[9];
                     SensorManager.remapCoordinateSystem(
-                            ininR,
+                            inR,
                             SensorManager.AXIS_X,  // デバイスx軸が地球の何軸になるか
                             SensorManager.AXIS_Z,  // デバイスy軸が地球の何軸になるか
                             outR );
