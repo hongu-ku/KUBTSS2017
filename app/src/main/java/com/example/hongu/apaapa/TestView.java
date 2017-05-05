@@ -65,7 +65,7 @@ public class TestView extends View {
         return Pitch1;
     }
 
-    private float Pitch1 = 30;
+    private float Pitch1 = 0;
 
     private int deg10 = 10;
     private int deg20 = 20;
@@ -117,11 +117,11 @@ public class TestView extends View {
         //canvas.drawRect(rect, mPaint);
 //        canvas.save();
 //        これ以降は前後する場所の描画
-        if((Pitch1 - Pitch) * 4 <=150 && (Pitch1 - Pitch) * 4 >= -150)
-            canvas.translate(0, (Pitch1 - Pitch) * 4 );
-        else if ((Pitch1 - Pitch) * 4 > 150)
+        if(Pitch * 4 <=150 && Pitch * 4 >= -150)
+            canvas.translate(0, Pitch * 4 );
+        else if (Pitch * 4 > 150)
             canvas.translate(0, 150);
-        else if ((Pitch1 - Pitch) * 4 < -150)
+        else if  (Pitch * 4 < -150)
             canvas.translate(0,-150);
         canvas.drawLine(-100,0,100,0,paint1);
 
@@ -138,5 +138,9 @@ public class TestView extends View {
     public void setOnLongClickListener(OnLongClickListener l) {
         super.setOnLongClickListener(l);
         this.setPitch1(this.Pitch);
+    }
+
+    public void setsetPitch1 () {
+        Pitch1 = Pitch;
     }
 }

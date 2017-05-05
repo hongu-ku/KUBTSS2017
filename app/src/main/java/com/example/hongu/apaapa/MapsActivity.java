@@ -378,7 +378,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // 回転行列を得る
                     float[] inR = new float[9];
 
-                    float deg = rad2deg(save[1]);
+                    float deg = testView.getPitch1();
                     double rad = Math.toRadians(deg);
 
                     float sin = (float) Math.sin(rad);
@@ -504,7 +504,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        });
         testView.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
-                testView.setPitch1(testView.getPitch());
+                testView.setsetPitch1();
                 Pitchneu = testView.getPitch1();
                 System.out.println("debug " + testView.getPitch1());
                 testView.invalidate();
