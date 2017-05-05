@@ -358,6 +358,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for (int i = 0; i < 3; i++)
             save[i] = 0;
 
+
+
         mSensorEventListener = new SensorEventListener()
         {
             public void onSensorChanged (SensorEvent event) {
@@ -376,15 +378,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // 回転行列を得る
                     float[] inR = new float[9];
 
-
-
-                    float deg = rad2deg( save[1] ) ;
+                    float deg = rad2deg(save[1]);
                     double rad = Math.toRadians(deg);
 
                     float sin = (float) Math.sin(rad);
                     float cos = (float) Math.cos(rad);
-
-
 
                     rot[0] = 1;
                     rot[1] = 0;
@@ -397,6 +395,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     rot[8] = cos;
 
 
+
                     SensorManager.getRotationMatrix(
                             inR,
                             null,
@@ -405,15 +404,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     float[] ininR = new float[9];
 
-                    ininR[0] = inR[0]*rot[0] + inR[1]*rot[3] + inR[2]*rot[6];
-                    ininR[1] = inR[0]*rot[1] + inR[1]*rot[4] + inR[2]*rot[7];
-                    ininR[2] = inR[0]*rot[2] + inR[1]*rot[5] + inR[2]*rot[8];
-                    ininR[3] = inR[3]*rot[0] + inR[4]*rot[3] + inR[5]*rot[6];
-                    ininR[4] = inR[3]*rot[1] + inR[4]*rot[4] + inR[5]*rot[7];
-                    ininR[5] = inR[3]*rot[2] + inR[4]*rot[5] + inR[5]*rot[8];
-                    ininR[6] = inR[6]*rot[0] + inR[7]*rot[3] + inR[8]*rot[6];
-                    ininR[7] = inR[6]*rot[1] + inR[7]*rot[4] + inR[8]*rot[7];
-                    ininR[8] = inR[6]*rot[2] + inR[7]*rot[5] + inR[8]*rot[8];
 
 
                     // ワールド座標とデバイス座標のマッピングを変換する
@@ -426,8 +416,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // 姿勢を得る
                     // TODO: 回転行列(>_<)
 
+                    ininR[0] = outR[0]*rot[0] + outR[1]*rot[3] + outR[2]*rot[6];
+                    ininR[1] = outR[0]*rot[1] + outR[1]*rot[4] + outR[2]*rot[7];
+                    ininR[2] = outR[0]*rot[2] + outR[1]*rot[5] + outR[2]*rot[8];
+                    ininR[3] = outR[3]*rot[0] + outR[4]*rot[3] + outR[5]*rot[6];
+                    ininR[4] = outR[3]*rot[1] + outR[4]*rot[4] + outR[5]*rot[7];
+                    ininR[5] = outR[3]*rot[2] + outR[4]*rot[5] + outR[5]*rot[8];
+                    ininR[6] = outR[6]*rot[0] + outR[7]*rot[3] + outR[8]*rot[6];
+                    ininR[7] = outR[6]*rot[1] + outR[7]*rot[4] + outR[8]*rot[7];
+                    ininR[8] = outR[6]*rot[2] + outR[7]*rot[5] + outR[8]*rot[8];
+
                     SensorManager.getOrientation(
-                            outR,
+                            ininR,
                             fAttitude );
 
                     save = fAttitude;
