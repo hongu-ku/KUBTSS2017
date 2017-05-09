@@ -210,15 +210,7 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
 
 
 
-            ininR[0] = outR[0]*rot[0] + outR[1]*rot[3] + outR[2]*rot[6];
-            ininR[1] = outR[0]*rot[1] + outR[1]*rot[4] + outR[2]*rot[7];
-            ininR[2] = outR[0]*rot[2] + outR[1]*rot[5] + outR[2]*rot[8];
-            ininR[3] = outR[3]*rot[0] + outR[4]*rot[3] + outR[5]*rot[6];
-            ininR[4] = outR[3]*rot[1] + outR[4]*rot[4] + outR[5]*rot[7];
-            ininR[5] = outR[3]*rot[2] + outR[4]*rot[5] + outR[5]*rot[8];
-            ininR[6] = outR[6]*rot[0] + outR[7]*rot[3] + outR[8]*rot[6];
-            ininR[7] = outR[6]*rot[1] + outR[7]*rot[4] + outR[8]*rot[7];
-            ininR[8] = outR[6]*rot[2] + outR[7]*rot[5] + outR[8]*rot[8];
+            MatrixMultiply(outR, rot, 9, ininR);
 
 //            for(int i=0; i<9; i++) {
 //                System.out.println("outR["+i+"]: " + outR[i]);
@@ -240,6 +232,17 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
             }
             saveCount++;
         }
+    }
+
+    public float[] MatrixMultiply(float[] R, float[] L,int sizeR, float[] outM) {
+        for (int j=0; j<sizeR; j++)
+            outM[j] = 0;
+        for (int k=0; k<3; k++) {
+            for (int i = 0; i < sizeR; i++) {
+                outM[i] +=R[(i/3) * 3 + k] *L[i%3 + 3*k] ;
+            }
+        }
+        return outM;
     }
 
     int radianToDegree(float rad){
