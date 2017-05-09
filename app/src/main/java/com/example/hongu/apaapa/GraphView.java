@@ -22,6 +22,7 @@ public class GraphView extends View {
     protected double vmin;
     protected double[] value = new double[X_SIZE];
     protected String unit, title;
+    protected int type;
 
     public double getV() {
         return v;
@@ -46,6 +47,7 @@ public class GraphView extends View {
         this.vmax = attrsArray.getFloat(R.styleable.GraphView_vmax, 0.1f);
         this.unit = attrsArray.getString(R.styleable.GraphView_unit);
         this.title = attrsArray.getString(R.styleable.GraphView_title);
+        this.type = attrsArray.getInteger(R.styleable.GraphView_type, 1);
        // this.v=attrsArray.getFloat(R.styleable.GraphView_v, 0.1f);
         attrsArray.recycle();
     }
@@ -59,6 +61,7 @@ public class GraphView extends View {
         this.vmax = attrsArray.getFloat(R.styleable.GraphView_vmax, 0.1f);
         this.unit = attrsArray.getString(R.styleable.GraphView_unit);
         this.title = attrsArray.getString(R.styleable.GraphView_title);
+        this.type = attrsArray.getInteger(R.styleable.GraphView_type, 1);
         attrsArray.recycle();
     }
 
@@ -139,7 +142,10 @@ public class GraphView extends View {
         inclement.start();*/
 
 
-        canvas.drawText((int)v + " " + unit, X_SIZE / 2, Y_SIZE /2, paint3);
+        if (type == 0)
+            canvas.drawText((int)v + " " + unit, X_SIZE / 2, Y_SIZE /2, paint3);
+        else if (type == 1)
+            canvas.drawText(String.format("%.2f", v) + " " + unit, X_SIZE / 2, Y_SIZE / 2, paint3);
         paint1.setTextSize(12);
         canvas.drawText((int) vmin + unit, X_SIZE + 3, Y_SIZE + 3, paint2);
         canvas.drawText((int) vmax + unit, X_SIZE / 4, 2, paint2);

@@ -85,16 +85,16 @@ public class TestView extends View {
 
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setAntiAlias(true);
-        mPaint.setStrokeWidth(3);
+        mPaint.setStrokeWidth(4);
 
         paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
-        paint.setStrokeWidth(2);
+        paint.setStrokeWidth(3);
         paint.setColor(Color.GRAY);
 
         paint1.setStyle(Paint.Style.STROKE);
         paint1.setAntiAlias(true);
-        paint1.setStrokeWidth(4);
+        paint1.setStrokeWidth(5);
         paint1.setColor(Color.RED);
 
         CircleDraw(canvas);

@@ -23,11 +23,12 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
     private LocationManager mLocationManager;
     private ReceivedDataAdapter mReceivedDataAdapter;
 
-    private static final int MATRIX_SIZE = 16;
+    private static final int MATRIX_SIZE = 9;
     /* 回転行列 */
     private float[]  inR = new float[MATRIX_SIZE];
     private float[] outR = new float[MATRIX_SIZE];
     private float[]    I = new float[MATRIX_SIZE];
+    private float[] ininR = new float[MATRIX_SIZE];
     /* センサーの値 */
     private float[] orientationValues   = new float[3];
     private float[] magneticValues      = new float[3];
@@ -74,7 +75,7 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
 
     float deg;
     double rad;
-    float[] ininR = new float[9];
+
 
     float sin;
     float cos;
@@ -219,10 +220,10 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
             ininR[7] = outR[6]*rot[1] + outR[7]*rot[4] + outR[8]*rot[7];
             ininR[8] = outR[6]*rot[2] + outR[7]*rot[5] + outR[8]*rot[8];
 
-            for(int i=0; i<9; i++) {
-                System.out.println("outR["+i+"]: " + outR[i]);
-                System.out.println("ininR["+i+"]: " + ininR[i]);
-            }
+//            for(int i=0; i<9; i++) {
+//                System.out.println("outR["+i+"]: " + outR[i]);
+//                System.out.println("ininR["+i+"]: " + ininR[i]);
+//            }
 
 
 

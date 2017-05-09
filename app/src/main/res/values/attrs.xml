@@ -9,6 +9,7 @@
         <attr name="unit" format="string" />
         <attr name="title" format="string" />
         <attr name="v" format="float" />
+        <attr name="type" format="integer" />
     </declare-styleable>
 
 

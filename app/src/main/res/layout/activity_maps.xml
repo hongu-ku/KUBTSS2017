@@ -113,7 +113,8 @@
             sample:vmin= "0"
             sample:vmax= "150"
             sample:unit= "RPM"
-            sample:title= "Cadence">
+            sample:title= "Cadence"
+            sample:type="0">
         </com.example.hongu.apaapa.GraphView>
 
         <com.example.hongu.apaapa.GraphView
@@ -129,6 +130,7 @@
             sample:vmax= "20"
             sample:unit= "cm"
             sample:title= "Ultsonic"
+            sample:type="0"
             android:layout_marginLeft="225dp">
         </com.example.hongu.apaapa.GraphView>
     </LinearLayout>
@@ -150,27 +152,15 @@
                 sample:vmin= "0"
                 sample:vmax= "100"
                 sample:unit= "m/s"
-                sample:title= "機速">
+                sample:title= "機速"
+                sample:type="1">
             </com.example.hongu.apaapa.GraphView>
 
-            <com.example.hongu.apaapa.GraphView
-                android:layout_width="190dp"
-                android:layout_height="wrap_content"
-                class="com.example.hongu.apaapa.GraphView"
-                android:id="@+id/air"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                sample:x0= "100"
-                sample:y0= "100"
-                sample:vmin= "0"
-                sample:vmax= "100"
-                sample:unit= "air"
-                sample:title= "気速">
-            </com.example.hongu.apaapa.GraphView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginLeft="190dp">
 
 
                 <TextView

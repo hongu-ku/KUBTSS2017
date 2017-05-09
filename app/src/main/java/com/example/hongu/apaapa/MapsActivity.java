@@ -414,16 +414,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             outR );
                     // 姿勢を得る
                     // TODO: 回転行列(>_<)
-
-                    ininR[0] = outR[0]*rot[0] + outR[1]*rot[3] + outR[2]*rot[6];
-                    ininR[1] = outR[0]*rot[1] + outR[1]*rot[4] + outR[2]*rot[7];
-                    ininR[2] = outR[0]*rot[2] + outR[1]*rot[5] + outR[2]*rot[8];
-                    ininR[3] = outR[3]*rot[0] + outR[4]*rot[3] + outR[5]*rot[6];
-                    ininR[4] = outR[3]*rot[1] + outR[4]*rot[4] + outR[5]*rot[7];
-                    ininR[5] = outR[3]*rot[2] + outR[4]*rot[5] + outR[5]*rot[8];
-                    ininR[6] = outR[6]*rot[0] + outR[7]*rot[3] + outR[8]*rot[6];
-                    ininR[7] = outR[6]*rot[1] + outR[7]*rot[4] + outR[8]*rot[7];
-                    ininR[8] = outR[6]*rot[2] + outR[7]*rot[5] + outR[8]*rot[8];
+                    MatrixMultiply(outR, rot, 9, ininR);
 
                     SensorManager.getOrientation(
                             ininR,
@@ -514,8 +505,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return true; //trueの場合はonClickListenerを返さない？
             }
         });
+    }
 
-
+    public float[] MatrixMultiply(float[] R, float[] L,int sizeR, float[] outM) {
+        for (int j=0; j<sizeR; j++)
+            outM[j] = 0;
+        for (int k=0; k<3; k++) {
+            for (int i = 0; i < sizeR; i++) {
+                outM[i] +=R[(i/3) * 3 + k] *L[i%3 + 3*k] ;
+            }
+        }
+        return outM;
     }
 
 //    @Override
@@ -553,7 +553,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //        private TextView txtTime, txtRud, txtEle, txtTrim, txtAirspeed, txtCadence, txtUltsonic, txtAtmpress, txtAltitude;
 //        private TextView txtCadencevolt, txtUltsonicvolt, txtServovolt;
         //private GraphView airspeed, speed, rpm, ultsonic;
-        GraphView airspeed = (GraphView) findViewById(R.id.air);
+        //GraphView airspeed = (GraphView) findViewById(R.id.air);
         GraphView speed = (GraphView) findViewById(R.id.speed);
         //        GraphView graphView2 = (GraphView) findViewById(R.id.view2);
         GraphView rpm = (GraphView) findViewById(R.id.rpm);
@@ -599,7 +599,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         public void start() {
             new Thread(this).start();
-            System.out.println("aaaaaaああああ");
+            System.out.println("start");
         }
 
         public void stopRunning() {
@@ -628,11 +628,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                        System.out.println("いぁ");
 
                         speed.setV(mReceivedDataAdapter.getAirspeed());
-                        airspeed.setV(mReceivedDataAdapter.getAirspeed());
+          //              airspeed.setV(mReceivedDataAdapter.getAirspeed());
                         rpm.setV(mReceivedDataAdapter.getCadence());
                         ult.setV(mReceivedDataAdapter.getUltsonic());
                         speed.invalidate();
-                        airspeed.invalidate();
+            //            airspeed.invalidate();
                         rpm.invalidate();
                         ult.invalidate();
 //                        txtYaw.setText(String.valueOf(mSensorAdapter.getYaw()));
@@ -794,7 +794,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onMapLongClick(LatLng longpushLocation) {
                 try {
                     CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(latlng).zoom(15).bearing(0).build();
+                            .target(latlng).zoom(18).bearing(0).build();
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 } catch (NullPointerException e) {
                     // do nothing
@@ -823,7 +823,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        settings.setZoomGesturesEnabled(true);
 //
 //        //マップの種類
-//        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
         // DangerousなPermissionはリクエストして許可をもらわないと使えない(Android6以降？)
 //        if (ActivityCompat.checkSelfPermission(this, Manifest.permisson.ACCESS_FINE_LOCATION) !=
@@ -932,7 +932,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (mStart) {
             if (mFirst) {
                 CameraPosition cameraposition = new CameraPosition.Builder()
-                        .target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(15)
+                        .target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(18)
                         .bearing(0).build();
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraposition));
                 Bundle args = new Bundle();
