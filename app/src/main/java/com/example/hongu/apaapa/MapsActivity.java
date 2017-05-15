@@ -226,6 +226,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         initSensor();
         testView = (TestView) findViewById(R.id.view5);
+        final TextView disText = (TextView) findViewById(R.id.textview);
+        final TextView straightText = (TextView) findViewById(R.id.textview1);
+        disText.setTextColor(Color.RED);
+        straightText.setTextColor(Color.RED);
         // NumberPicker 設定
         final NumberPicker numberPicker = (NumberPicker)findViewById(R.id.numberPicker);
         numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
@@ -333,24 +337,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mStop = true;
                     mStart = false;
                     // [i].stopRunning();
-                    f++;
+                    f=0;
                     i = 0;
                     mCloudLoggerAdapter.setCount(0);
-                    startbtn.setText("RESET");
-                } else {
-                    // subThreadSample[i] = new SubThreadSample("a", 10, 10);
-                    f = 0;
                     val++;
                     numberPicker.setValue(val);
                     startbtn.setText("START");
-                    TextView disText = (TextView) findViewById(R.id.textview);
-                    TextView straightText = (TextView) findViewById(R.id.textview1);
-                    disText.setTextColor(Color.RED);
-                    straightText.setTextColor(Color.RED);
                     disText.setText("Distance:");
                     straightText.setText("Straight:");
-                }
 
+                }
             }
         });
 
