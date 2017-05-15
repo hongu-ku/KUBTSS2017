@@ -94,7 +94,7 @@ public class GraphView extends View {
        // this.drawGraph(v, canvas);
     }
 
-    // 見やすいテキスト形式は？
+    // TODO: 見やすいテキスト形式は？
     public void drawText(Canvas canvas, double v){
         paint1.setColor(Color.RED);
         paint1.setStrokeWidth(6);
@@ -112,8 +112,13 @@ public class GraphView extends View {
         //paint2.setTextAlign(Paint.Align.CENTER);
 
         canvas.drawRect(0,0,340,250,paint1);
-        canvas.drawText((int)v+"", 0, 170, paint2);
-        canvas.drawText(unit, 330, 200, paint1);
+        if (type == 0) {
+            canvas.drawText((int) v + "", 0, 170, paint2);
+            canvas.drawText(unit, 330, 200, paint1);
+        }  else if (type == 1) {
+            canvas.drawText(String.format("%.1f", v) + "", 0, 170, paint2);
+            canvas.drawText(unit, 330, 230, paint1);
+        }
     }
 
     // 今回は使わない可能性が高いが、メーターを使うとき用
@@ -143,7 +148,7 @@ public class GraphView extends View {
 
 
         if (type == 0)
-            canvas.drawText((int)v + " " + unit, X_SIZE / 2, Y_SIZE /2, paint3);
+            canvas.drawText(v + " " + unit, X_SIZE / 2, Y_SIZE /2, paint3);
         else if (type == 1)
             canvas.drawText(String.format("%.2f", v) + " " + unit, X_SIZE / 2, Y_SIZE / 2, paint3);
         paint1.setTextSize(12);

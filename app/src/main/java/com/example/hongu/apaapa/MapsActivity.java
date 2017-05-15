@@ -85,7 +85,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ReceivedDataAdapter mReceivedDataAdapter;
     private SensorAdapter mSensorAdapter;
     private TextSensorViewThread mTextSensorViewThread;//テキスト形式のUI用スレッド
-    private Sound sound;
+    //private Sound sound;
     private double atmLapse, atmStandard;
 
     private String url;
@@ -309,6 +309,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        tb.setChecked(false);
 
         //ボタンが押された時の動き
+        // // TODO: 2017/05/14 リセットボタン廃止
         startbtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -413,8 +414,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             SensorManager.AXIS_Z,  // デバイスy軸が地球の何軸になるか
                             outR );
                     // 姿勢を得る
-                    // TODO: 回転行列(>_<)
-                    MatrixMultiply(outR, rot, 9, ininR);
+                    // 回転行列をoutRにかける
+                    MatrixMultiply(outR, rot, 3, ininR);
 
                     SensorManager.getOrientation(
                             ininR,
@@ -507,15 +508,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    public float[] MatrixMultiply(float[] R, float[] L,int sizeR, float[] outM) {
-        for (int j=0; j<sizeR; j++)
-            outM[j] = 0;
-        for (int k=0; k<3; k++) {
-            for (int i = 0; i < sizeR; i++) {
-                outM[i] +=R[(i/3) * 3 + k] *L[i%3 + 3*k] ;
+    public void MatrixMultiply(float[] R, float[] L,int sizeR/*正方行列の次元*/, float[] outM) {
+        for (int k=0; k<sizeR; k++) {
+            for (int i = 0; i < sizeR*sizeR; i++) {
+                outM[i] +=R[(i/sizeR) * sizeR + k] *L[i%sizeR + sizeR*k] ;
             }
         }
-        return outM;
     }
 
 //    @Override
@@ -645,8 +643,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                        txtIntegral.setText(String.format("%.0f", mSensorAdapter.getIntegralDistance()));
 //
 //                        txtTime.setText(String.valueOf(mReceivedDataAdapter.getTime())); //mbed時間
-                        elevator.setText("Elevator: " + String.format("%.2f", mReceivedDataAdapter.getElevator()));//水平サーボの舵角
-                        rudder.setText("Rudder: " +String.format("%.2f", mReceivedDataAdapter.getRudder()));//垂直サーボの舵角
+                        elevator.setText("Elev: " + String.format("%.2f", mReceivedDataAdapter.getElevator()));//水平サーボの舵角
+                        rudder.setText("Rud: " +String.format("%.2f", mReceivedDataAdapter.getRudder()));//垂直サーボの舵角
                         trim.setText("Trim: " +String.valueOf(mReceivedDataAdapter.getTrim()));//elevatorの舵角（ボタン）
 //                        txtAirspeed.setTextSize(100.0f);
 //                〇      txtAirspeed.setText(String.format("%.2f", mReceivedDataAdapter.getAirspeed()) + "m/s");//気速
@@ -752,12 +750,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onDestroy();
         System.out.println("スレッド終了");
         mTextSensorViewThread.stopRunning();
+        System.out.println("1");
         mCloudLoggerSendThread.stopRunning();
+        System.out.println("2");
         //mCloudLoggerAdapter.stoplogger();
-        sound.release();
+        //sound.release();
+        System.out.println("3");
         mReceivedDataAdapter.stop();
+        System.out.println("4");
         mSensorAdapter.stopSensor();
+        System.out.println("5");
         mCloudLoggerService.close();
+        System.out.println("6");
+//        try{
+//            wait(6000);
+//        } catch (Exception e){
+//            e.printStackTrace();
+//        }
+        System.out.println("END");
     }
 
 
@@ -805,6 +815,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // MyLocationレイヤーを有効に
         mMap.setMyLocationEnabled(true);
+        mMap.addMarker(new MarkerOptions().position(new LatLng(35.294170,136.254422)));
         // MyLocationButtonを有効に
         UiSettings settings = mMap.getUiSettings();
         settings.setMyLocationButtonEnabled(true);
@@ -904,7 +915,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
-        TextView GPS = (TextView) findViewById(R.id.GPS);
+
         // Stop後は動かさない
         if (mStop) {
             return;
@@ -923,11 +934,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .anchor(0.5f, 0.5f)
                 .rotation(rad2deg( fAttitude[0] ) + 90));
 
-        if (latlng.latitude == 0 || latlng.longitude == 0) {
-            GPS.setText("NO GPS!!");
-        } else {
-            GPS.setText("goodGPS");
-        }
+
 
         if (mStart) {
             if (mFirst) {
@@ -959,7 +966,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             for (LatLng polyLatLng : mRunList) {
                 polyOptions.add(polyLatLng);
             }
-            polyOptions.color(Color.BLUE);
+            polyOptions.color(Color.RED);
             polyOptions.width(3.5f);
             polyOptions.geodesic(false);
             mMap.addPolyline(polyOptions);

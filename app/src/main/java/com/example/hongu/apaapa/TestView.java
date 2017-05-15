@@ -67,20 +67,18 @@ public class TestView extends View {
 
     private float Pitch1 = 0;
 
-    private int deg10 = 10;
-    private int deg20 = 20;
-
-    double rad10= Math.toRadians(deg10);
-    double rad20 = Math.toRadians(deg20);
-    float sin10 = (float) Math.sin(rad10);
-    float sin20 = (float) Math.sin(rad20);
-    float cos10 = (float) Math.cos(rad10);
-    float cos20 = (float) Math.cos(rad20);
+    float sin10 = Deg2sin(10);
+    float sin20 = Deg2sin(20);
+    float sin50 = Deg2sin(50);
+    float cos10 = Deg2cos(10);
+    float cos20 = Deg2cos(20);
+    float cos50 = Deg2cos(50);
+    float bigr = 150 * sin50 /sin10;
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.scale(1.1f,1.1f);
+        canvas.scale(1.7f,1.7f);
         canvas.translate(155, 155);
 
         mPaint.setStyle(Paint.Style.STROKE);
@@ -102,28 +100,39 @@ public class TestView extends View {
 
     private void CircleDraw(Canvas canvas) {
         RectF rect = new RectF(-150, -150, 150, 150);
-        canvas.drawOval(rect, mPaint);
-        canvas.drawLine(0,-150,0,150, paint);
-        canvas.drawLine(-150,0,150,0, paint);
+        RectF rectR = new RectF(150*cos50 + bigr * (cos10-1),-bigr ,150*cos50 + bigr *(1+cos10) ,bigr);
+        RectF rectL = new RectF(-150*cos50 - bigr *(1+cos10),-bigr ,-150*cos50 - bigr * (cos10-1) ,bigr);
+        canvas.drawArc(rect, 230 , 80 , false , mPaint);
+        canvas.drawArc(rect, 50 , 80 , false, mPaint);
+        canvas.drawArc(rectR, 170, 20, false, mPaint);
+        canvas.drawArc(rectL, 350, 20, false, mPaint);
+        canvas.drawLine(0,-150,0,150, paint);  // 縦線
+        canvas.drawLine(-150*cos50 + bigr*(1-cos10) , 0,150*cos50 - bigr*(1-cos10),0, paint);  // 横線
         canvas.save();
 
 //        回転する場所の描画
         canvas.rotate( -Yaw );
+        //    RectF layer = new RectF(-150*cos50, -150, 150*cos50, 150);
+        //    canvas.saveLayer(layer, null, Canvas.CLIP_TO_LAYER_SAVE_FLAG);
         canvas.drawLine(0,-150,0,150,paint1);
-        canvas.drawLine(-100,0,100,0,mPaint);
+        canvas.drawLine(-150*cos50 + bigr*(1-cos10) , 0,150*cos50 - bigr*(1-cos10),0,mPaint);
         canvas.drawLine(-75,-50,75,-50,mPaint);
         canvas.drawLine(-75,50,75,50,mPaint);
+        //    canvas.restore();
 
         //canvas.drawRect(rect, mPaint);
 //        canvas.save();
 //        これ以降は前後する場所の描画
+
         if(-Pitch * 4 <=150 && -Pitch * 4 >= -150)
             canvas.translate(0, - Pitch * 4 );
         else if (-Pitch * 4 > 150)
             canvas.translate(0, 150);
         else if  (-Pitch * 4 < -150)
             canvas.translate(0,-150);
-        canvas.drawLine(-100,0,100,0,paint1);
+//        canvas.drawLine(-100,0,100,0,paint1);
+//        canvas.translate(0, Pitch * 3 );
+        canvas.drawLine(-150*cos50 + bigr*(1-cos10) , 0,150*cos50 - bigr*(1-cos10),0,paint1);
 
 //        これ以降は動かない
         canvas.restore();
@@ -132,6 +141,13 @@ public class TestView extends View {
         canvas.drawLine(155 * sin10, -155 * cos10, 145 * sin10, -145 * cos10, mPaint);
         canvas.drawLine(-155 * sin20, -155 * cos20, -145 * sin20, -145 * cos20, mPaint);
         canvas.drawLine(155 * sin20, -155 * cos20, 145 * sin20, -145 * cos20, mPaint);
+    }
+
+    public float Deg2sin (int deg) {
+        return (float) Math.sin(Math.toRadians(deg));
+    }
+    public float Deg2cos (int deg) {
+        return (float) Math.cos(Math.toRadians(deg));
     }
 
     @Override
@@ -144,3 +160,37 @@ public class TestView extends View {
         Pitch1 = Pitch;
     }
 }
+
+//    private void CircleDraw(Canvas canvas) {
+//        RectF rect = new RectF(-150, -150, 150, 150);
+//        canvas.drawOval(rect, mPaint);
+//        canvas.drawLine(0,-150,0,150, paint);
+//        canvas.drawLine(-150,0,150,0, paint);
+//        canvas.save();
+//
+////        回転する場所の描画
+//        canvas.rotate( -Yaw );
+//        canvas.drawLine(0,-150,0,150,paint1);
+//        canvas.drawLine(-100,0,100,0,mPaint);
+//        canvas.drawLine(-75,-50,75,-50,mPaint);
+//        canvas.drawLine(-75,50,75,50,mPaint);
+//
+//        //canvas.drawRect(rect, mPaint);
+////        canvas.save();
+////        これ以降は前後する場所の描画
+//        if(-Pitch * 4 <=150 && -Pitch * 4 >= -150)
+//            canvas.translate(0, - Pitch * 4 );
+//        else if (-Pitch * 4 > 150)
+//            canvas.translate(0, 150);
+//        else if  (-Pitch * 4 < -150)
+//            canvas.translate(0,-150);
+//        canvas.drawLine(-100,0,100,0,paint1);
+//
+////        これ以降は動かない
+//        canvas.restore();
+//        canvas.drawLine(0, -155, 0, -145, mPaint);
+//        canvas.drawLine(-155 * sin10, -155 * cos10, -145 * sin10, -145 * cos10, mPaint);
+//        canvas.drawLine(155 * sin10, -155 * cos10, 145 * sin10, -145 * cos10, mPaint);
+//        canvas.drawLine(-155 * sin20, -155 * cos20, -145 * sin20, -145 * cos20, mPaint);
+//        canvas.drawLine(155 * sin20, -155 * cos20, 145 * sin20, -145 * cos20, mPaint);
+//    }

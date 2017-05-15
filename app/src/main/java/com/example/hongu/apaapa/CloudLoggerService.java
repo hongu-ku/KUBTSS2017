@@ -102,6 +102,7 @@ public class CloudLoggerService {
 
     public void close() {
         con.disconnect();
+        System.out.println("スレッド終了");
         printStream.close();
     }
 }

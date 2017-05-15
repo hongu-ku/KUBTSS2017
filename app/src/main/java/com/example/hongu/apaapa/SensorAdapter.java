@@ -210,7 +210,7 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
 
 
 
-            MatrixMultiply(outR, rot, 9, ininR);
+            MatrixMultiply(outR, rot, 3, ininR);
 
 //            for(int i=0; i<9; i++) {
 //                System.out.println("outR["+i+"]: " + outR[i]);
@@ -234,15 +234,12 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
         }
     }
 
-    public float[] MatrixMultiply(float[] R, float[] L,int sizeR, float[] outM) {
-        for (int j=0; j<sizeR; j++)
-            outM[j] = 0;
-        for (int k=0; k<3; k++) {
-            for (int i = 0; i < sizeR; i++) {
-                outM[i] +=R[(i/3) * 3 + k] *L[i%3 + 3*k] ;
+    public void MatrixMultiply(float[] R, float[] L,int sizeR/*正則行列の次元*/, float[] outM) {
+        for (int k=0; k<sizeR; k++) {
+            for (int i = 0; i < sizeR*sizeR; i++) {
+                outM[i] +=R[(i/sizeR) * sizeR + k] *L[i%sizeR + sizeR*k] ;
             }
         }
-        return outM;
     }
 
     int radianToDegree(float rad){
