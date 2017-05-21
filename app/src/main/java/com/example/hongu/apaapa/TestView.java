@@ -28,6 +28,9 @@ public class TestView extends View {
     private Paint paint = new Paint();
     private Paint paint1 = new Paint();
 
+    private float save=0;
+    private float savelongi=1;
+
     public void setPitch(float pitch) {
         Pitch = pitch;
     }
@@ -114,7 +117,16 @@ public class TestView extends View {
         canvas.rotate( -Yaw );
         //    RectF layer = new RectF(-150*cos50, -150, 150*cos50, 150);
         //    canvas.saveLayer(layer, null, Canvas.CLIP_TO_LAYER_SAVE_FLAG);
-        canvas.drawLine(0,-150,0,150,paint1);
+        /* 縦線がはみ出ないようにする */
+        if (Yaw<0){
+            save = -Yaw;
+        } else {
+            save = Yaw;
+        }
+        final double x =150*cos50 + bigr *(1+cos10);
+        savelongi = (float) (x * Deg2sin(save) - Math.sqrt(x*x * Deg2sin(save)*Deg2sin(save) - x*x +bigr*bigr))/150;
+
+        canvas.drawLine(0,-150,0,150,paint1); // 縦線
         canvas.drawLine(-150*cos50 + bigr*(1-cos10) , 0,150*cos50 - bigr*(1-cos10),0,mPaint);
         canvas.drawLine(-75,-50,75,-50,mPaint);
         canvas.drawLine(-75,50,75,50,mPaint);
@@ -147,6 +159,13 @@ public class TestView extends View {
         return (float) Math.sin(Math.toRadians(deg));
     }
     public float Deg2cos (int deg) {
+        return (float) Math.cos(Math.toRadians(deg));
+    }
+
+    public float Deg2sin (float deg) {
+        return (float) Math.sin(Math.toRadians(deg));
+    }
+    public float Deg2cos (float deg) {
         return (float) Math.cos(Math.toRadians(deg));
     }
 

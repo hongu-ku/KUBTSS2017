@@ -137,7 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     float Pitchneu = 0;
     float[] save = new float[3];
 
-
+    MarkerOptions options = new MarkerOptions();
 
 
     double roll,switching,yaw,pitch,ultsonic;
@@ -313,7 +313,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        tb.setChecked(false);
 
         //ボタンが押された時の動き
-        // // TODO: 2017/05/14 リセットボタン廃止
         startbtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -345,7 +344,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     startbtn.setText("START");
                     disText.setText("Distance:");
                     straightText.setText("Straight:");
-
                 }
             }
         });
@@ -373,53 +371,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 // fAccell と fMagnetic から傾きと方位角を計算する
                 if( fAccell != null && fMagnetic != null ) {
-                    // 回転行列を得る
-                    float[] inR = new float[9];
-
-                    float deg = testView.getPitch1();
-                    double rad = Math.toRadians(deg);
-
-                    float sin = (float) Math.sin(rad);
-                    float cos = (float) Math.cos(rad);
-
-                    rot[0] = 1;
-                    rot[1] = 0;
-                    rot[2] = 0;
-                    rot[3] = 0;
-                    rot[4] = cos;
-                    rot[5] = -sin;
-                    rot[6] = 0;
-                    rot[7] = sin;
-                    rot[8] = cos;
-
-
-
-                    SensorManager.getRotationMatrix(
-                            inR,
-                            null,
-                            fAccell,
-                            fMagnetic );
-
-                    float[] ininR = new float[9];
-
-                    // ワールド座標とデバイス座標のマッピングを変換する
-                    float[] outR = new float[9];
-                    SensorManager.remapCoordinateSystem(
-                            inR,
-                            SensorManager.AXIS_X,  // デバイスx軸が地球の何軸になるか
-                            SensorManager.AXIS_Z,  // デバイスy軸が地球の何軸になるか
-                            outR );
-                    // 姿勢を得る
-                    // 回転行列をoutRにかける
-                    MatrixMultiply(outR, rot, 3, ininR);
+//                    // 回転行列を得る
+//                    float[] inR = new float[9];
+//
+//                    float deg = testView.getPitch1();
+//                    double rad = Math.toRadians(deg);
+//
+//                    float sin = (float) Math.sin(rad);
+//                    float cos = (float) Math.cos(rad);
+//
+//                    rot[0] = 1;
+//                    rot[1] = 0;
+//                    rot[2] = 0;
+//                    rot[3] = 0;
+//                    rot[4] = cos;
+//                    rot[5] = -sin;
+//                    rot[6] = 0;
+//                    rot[7] = sin;
+//                    rot[8] = cos;
+//
+//
+//
+//                    SensorManager.getRotationMatrix(
+//                            inR,
+//                            null,
+//                            fAccell,
+//                            fMagnetic );
+//
+//                    float[] ininR = new float[9];
+//
+//                    // ワールド座標とデバイス座標のマッピングを変換する
+//                    float[] outR = new float[9];
+//                    SensorManager.remapCoordinateSystem(
+//                            inR,
+//                            SensorManager.AXIS_X,  // デバイスx軸が地球の何軸になるか
+//                            SensorManager.AXIS_Z,  // デバイスy軸が地球の何軸になるか
+//                            outR );
+//                    // 姿勢を得る
+//                    // 回転行列をoutRにかける
+//                    MatrixMultiply(outR, rot, 3, ininR);
 
                     SensorManager.getOrientation(
-                            ininR,
+                            mSensorAdapter.getIninR(),
                             fAttitude );
 
-                    SensorManager.getOrientation(
-                            outR,
-                            oridinalAttitude );
+//                    SensorManager.getOrientation(
+//                            outR,
+//                            oridinalAttitude );
 
 
 //                    String buf =
@@ -467,6 +465,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                    System.out.println("testviewはok?");
                     // 再描画
                     testView.invalidate();
+                    mMap.addMarker(options
+                            .anchor(0.5f, 0.5f)
+                            .rotation(rad2deg( fAttitude[0] ) + 90));
                 }
             }
             public void onAccuracyChanged (Sensor sensor, int accuracy) {}
@@ -505,6 +506,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void MatrixMultiply(float[] R, float[] L,int sizeR/*正方行列の次元*/, float[] outM) {
+        for (int j=0; j<sizeR*sizeR; j++)
+            outM[j] = 0;
         for (int k=0; k<sizeR; k++) {
             for (int i = 0; i < sizeR*sizeR; i++) {
                 outM[i] +=R[(i/sizeR) * sizeR + k] *L[i%sizeR + sizeR*k] ;
@@ -565,30 +568,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             this.mSensorAdapter = mSensorAdapter;
             this.mReceivedDataAdapter = mReceivedDataAdapter;
 
-//            txtYaw = (TextView) findViewById(R.id.textViewYaw);
-//            txtPitch = (TextView) findViewById(R.id.textViewPitch);
-//            txtRoll = (TextView) findViewById(R.id.textViewRoll);
-//            txtLati = (TextView) findViewById(R.id.textViewLati);
-//            txtLong = (TextView) findViewById(R.id.textViewLong);
-//            txtCnt = (TextView) findViewById(R.id.textViewCnt);
-//            txtStraight = (TextView) findViewById(R.id.textViewStraight);
-//            txtIntegral = (TextView) findViewById(R.id.textViewIntegral);
-//
             txtStatus = (TextView) findViewById(R.id.textViewStatus);
-//            txtSelector = (TextView) findViewById(R.id.textViewSelector);
-//            txtTime = (TextView) findViewById(R.id.textViewTime);
-//            txtRud = (TextView) findViewById(R.id.textViewRud);
-//            txtEle = (TextView) findViewById(R.id.textViewEle);
-//            txtTrim = (TextView) findViewById(R.id.textViewTrim);
-//            txtAirspeed = (TextView) findViewById(R.id.textViewAirspeed);
-//            txtCadence = (TextView) findViewById(R.id.textViewCadence);
-//            txtUltsonic = (TextView) findViewById(R.id.textViewUltsonic);
-//            txtAtmpress = (TextView) findViewById(R.id.textViewAtmpress);
-//            txtAltitude = (TextView) findViewById(R.id.textViewAltitude);
-//            txtCadencevolt = (TextView) findViewById(R.id.textViewCadencevolt);
-//            txtUltsonicvolt = (TextView) findViewById(R.id.textViewUltsonicvolt);
-//            txtServovolt = (TextView) findViewById(R.id.textViewServovolt);
-
         }
 
         public void start() {
@@ -629,16 +609,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //            airspeed.invalidate();
                         rpm.invalidate();
                         ult.invalidate();
-//                        txtYaw.setText(String.valueOf(mSensorAdapter.getYaw()));
-//                        txtPitch.setText(String.valueOf(mSensorAdapter.getPitch()));
-//                        txtRoll.setText(String.valueOf(mSensorAdapter.getRoll()));
-//                        txtLati.setText(String.valueOf(mSensorAdapter.getLatitude()));
-//                        txtLong.setText(String.valueOf(mSensorAdapter.getLongitude()));
-//                        txtCnt.setText(String.valueOf(mSensorAdapter.getGpsCnt()));
-//                        txtStraight.setText(String.format("%.0f", mSensorAdapter.getStraightDistance()));
-//                        txtIntegral.setText(String.format("%.0f", mSensorAdapter.getIntegralDistance()));
-//
-//                        txtTime.setText(String.valueOf(mReceivedDataAdapter.getTime())); //mbed時間
+
                         elevator.setText("Elev: " + String.format("%.2f", mReceivedDataAdapter.getElevator()));//水平サーボの舵角
                         rudder.setText("Rud: " +String.format("%.2f", mReceivedDataAdapter.getRudder()));//垂直サーボの舵角
                         trim.setText("Trim: " +String.valueOf(mReceivedDataAdapter.getTrim()));//elevatorの舵角（ボタン）
@@ -921,7 +892,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // マーカー設定
         mMap.clear();
         latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions options = new MarkerOptions();
+
         options.position(latlng);
         // ランチャーアイコン
         BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.navi);

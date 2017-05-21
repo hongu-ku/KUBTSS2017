@@ -28,6 +28,11 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
     private float[]  inR = new float[MATRIX_SIZE];
     private float[] outR = new float[MATRIX_SIZE];
     private float[]    I = new float[MATRIX_SIZE];
+
+    public float[] getIninR() {
+        return ininR;
+    }
+
     private float[] ininR = new float[MATRIX_SIZE];
     /* センサーの値 */
     private float[] orientationValues   = new float[3];
@@ -208,6 +213,9 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
             //SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_X, SensorManager.AXIS_MINUS_Y, outR);//上ボート取付縦表示
             //SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_X, SensorManager.AXIS_Y, outR);//下ボート取付縦表示
 
+            for (int j=0; j<9; j++){
+                ininR[j] = 0;
+            }
 
 
             MatrixMultiply(outR, rot, 3, ininR);
