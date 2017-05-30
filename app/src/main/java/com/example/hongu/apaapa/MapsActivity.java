@@ -59,6 +59,8 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -133,6 +135,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     float[] attitude = new float[3];
     TestView testView;
     LatLng latlng;
+    LatLng Platform = new LatLng(35.294170,136.254422);
+    CircleOptions circleOptions;
+    CircleOptions circleOptions1;
+    CircleOptions currentCircle;
 
     float Pitchneu = 0;
     float[] save = new float[3];
@@ -226,6 +232,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         initSensor();
         testView = (TestView) findViewById(R.id.view5);
+        final DirectionView directionView = (DirectionView) findViewById(R.id.direction);
         final TextView disText = (TextView) findViewById(R.id.textview);
         final TextView straightText = (TextView) findViewById(R.id.textview1);
         disText.setTextColor(Color.RED);
@@ -354,23 +361,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for (int i = 0; i < 3; i++)
             save[i] = 0;
 
-
-
         mSensorEventListener = new SensorEventListener()
         {
             public void onSensorChanged (SensorEvent event) {
                 // センサの取得値をそれぞれ保存しておく
-                switch( event.sensor.getType()) {
-                    case Sensor.TYPE_ACCELEROMETER:
-                        fAccell = event.values.clone();
-                        break;
-                    case Sensor.TYPE_MAGNETIC_FIELD:
-                        fMagnetic = event.values.clone();
-                        break;
-                }
+//                switch( event.sensor.getType()) {
+//                    case Sensor.TYPE_ACCELEROMETER:
+//                        fAccell = event.values.clone();
+//                        break;
+//                    case Sensor.TYPE_MAGNETIC_FIELD:
+//                        fMagnetic = event.values.clone();
+//                        break;
+//                }
 
                 // fAccell と fMagnetic から傾きと方位角を計算する
-                if( fAccell != null && fMagnetic != null ) {
+                //if( fAccell != null && fMagnetic != null ) {
 //                    // 回転行列を得る
 //                    float[] inR = new float[9];
 //
@@ -415,9 +420,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             mSensorAdapter.getIninR(),
                             fAttitude );
 
-//                    SensorManager.getOrientation(
-//                            outR,
-//                            oridinalAttitude );
+                   SensorManager.getOrientation(
+                            mSensorAdapter.getOutR(),
+                            oridinalAttitude );
 
 
 //                    String buf =
@@ -465,34 +470,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                    System.out.println("testviewはok?");
                     // 再描画
                     testView.invalidate();
-                    mMap.addMarker(options
-                            .anchor(0.5f, 0.5f)
-                            .rotation(rad2deg( fAttitude[0] ) + 90));
-                }
+                directionView.setYaw(rad2deg(fAttitude[0]));
+                directionView.invalidate();
             }
             public void onAccuracyChanged (Sensor sensor, int accuracy) {}
         };
 
-        //トグルボタンが押された時の動き
-//        tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                if (b) {
-//                    startChronometer();
-//                    subThreadSample.start();
-//                    mStart = true;
-//                    mFirst = true;
-//                    mStop = false;
-//                    mMeter = 0.0;
-//                    mRunList.clear();
-//                } else {
-//                    stopChronometer();
-//                    mStop = true;
-//                    mStart = false;
-//                    subThreadSample.stopRunning();
-//                }
-//            }
-//        });
+
         testView.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
                 testView.setPitch1(rad2deg(oridinalAttitude[1]));
@@ -545,14 +529,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ReceivedDataAdapter mReceivedDataAdapter;
         Handler handler = new Handler(Looper.getMainLooper());
 
-        //        private TextView txtYaw, txtPitch, txtRoll, txtLati, txtLong, txtCnt, txtStraight, txtIntegral;
         private TextView txtStatus, txtSelector;
-        //        private TextView txtTime, txtRud, txtEle, txtTrim, txtAirspeed, txtCadence, txtUltsonic, txtAtmpress, txtAltitude;
-//        private TextView txtCadencevolt, txtUltsonicvolt, txtServovolt;
-        //private GraphView airspeed, speed, rpm, ultsonic;
-        //GraphView airspeed = (GraphView) findViewById(R.id.air);
         GraphView speed = (GraphView) findViewById(R.id.speed);
-        //        GraphView graphView2 = (GraphView) findViewById(R.id.view2);
         GraphView rpm = (GraphView) findViewById(R.id.rpm);
         GraphView ult = (GraphView) findViewById(R.id.ult);
         TextView elevator = (TextView) findViewById(R.id.elevator);
@@ -595,25 +573,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     e.printStackTrace();
                 }
             while (running) {
-//                System.out.println("ikeru?");
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-//                        System.out.println("いぁ");
 
                         speed.setV(mReceivedDataAdapter.getAirspeed());
-          //              airspeed.setV(mReceivedDataAdapter.getAirspeed());
                         rpm.setV(mReceivedDataAdapter.getCadence());
                         ult.setV(mReceivedDataAdapter.getUltsonic());
                         speed.invalidate();
-            //            airspeed.invalidate();
                         rpm.invalidate();
                         ult.invalidate();
 
                         elevator.setText("Elev: " + String.format("%.2f", mReceivedDataAdapter.getElevator()));//水平サーボの舵角
                         rudder.setText("Rud: " +String.format("%.2f", mReceivedDataAdapter.getRudder()));//垂直サーボの舵角
-                        trim.setText("Trim: " +String.valueOf(mReceivedDataAdapter.getTrim()));//elevatorの舵角（ボタン）
-//                        txtAirspeed.setTextSize(100.0f);
+                        trim.setText("Trim: " +String.valueOf(mReceivedDataAdapter.getTrim()));//elevatorの舵角(ボタン)
 //                〇      txtAirspeed.setText(String.format("%.2f", mReceivedDataAdapter.getAirspeed()) + "m/s");//気速
 //                        txtCadence.setTextSize(100.0f);
 //                〇        txtCadence.setText(String.format("%.2f", mReceivedDataAdapter.getCadence()) + "RPM");//足元回転数
@@ -678,15 +651,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         mCloudLoggerAdapter.setPitchneu(Pitchneu);
                         mCloudLoggerService.send();
                     } catch (Exception e) {
-
                         e.printStackTrace();
                     }
-//                handler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                    }
-//                });
+
                     try {
                         Thread.sleep(600);
                     } catch (InterruptedException e) {
@@ -782,7 +749,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // MyLocationレイヤーを有効に
         mMap.setMyLocationEnabled(true);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(35.294170,136.254422)));
+        mMap.addMarker(new MarkerOptions().position(Platform));
         // MyLocationButtonを有効に
         UiSettings settings = mMap.getUiSettings();
         settings.setMyLocationButtonEnabled(true);
@@ -801,9 +768,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        settings.setZoomGesturesEnabled(true);
 //
 //        //マップの種類
-        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        //衛星写真
+//        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
-        // DangerousなPermissionはリクエストして許可をもらわないと使えない(Android6以降？)
+        circleOptions = new CircleOptions()
+        .center(Platform)
+                .radius(10000)
+                .strokeColor(Color.BLUE)
+                .strokeWidth(1.0f); // In meters
+
+        circleOptions1 = new CircleOptions()
+                .center(Platform)
+                .radius(20000)
+                .strokeColor(Color.BLUE)
+                .strokeWidth(1.0f); // In meters
+
+        currentCircle = new CircleOptions()
+                .center(Platform)
+                .strokeColor(Color.GREEN)
+                .strokeWidth(1.1f);
+
+// Get back the mutable Circle
+        mMap.addCircle(circleOptions);
+
+            // DangerousなPermissionはリクエストして許可をもらわないと使えない(Android6以降？)
 //        if (ActivityCompat.checkSelfPermission(this, Manifest.permisson.ACCESS_FINE_LOCATION) !=
 //                PackageManager.PERMISSION_GRANTED) {
 //            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -882,6 +871,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
+        float[] dista = new float[3];
 
         // Stop後は動かさない
         if (mStop) {
@@ -900,6 +890,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(options
                 .anchor(0.5f, 0.5f)
                 .rotation(rad2deg( fAttitude[0] ) + 90));
+
+        Location.distanceBetween(Platform.latitude, Platform.longitude,
+                mRunList.get(i).latitude, mRunList.get(i).longitude,dista);
+
+        currentCircle.radius(dista[0]);
+
+        mMap.addCircle(circleOptions);
+        mMap.addCircle(circleOptions1);
+        mMap.addCircle(currentCircle);
+        mMap.addMarker(new MarkerOptions().position(Platform));
 
 
 

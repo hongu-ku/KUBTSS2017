@@ -124,9 +124,14 @@ public class TestView extends View {
             save = Yaw;
         }
         final double x =150*cos50 + bigr *(1+cos10);
-        savelongi = (float) (x * Deg2sin(save) - Math.sqrt(x*x * Deg2sin(save)*Deg2sin(save) - x*x +bigr*bigr))/150;
+        if (save > 50 && save <130)
+            savelongi = (float) (x * Deg2sin(save) - Math.sqrt(x*x * Deg2sin(save)*Deg2sin(save) - x*x +bigr*bigr));
+        else {
+            savelongi = 150;
+        }
 
-        canvas.drawLine(0,-150,0,150,paint1); // 縦線
+
+        canvas.drawLine(0,-savelongi,0,savelongi,paint1); // 縦線
         canvas.drawLine(-150*cos50 + bigr*(1-cos10) , 0,150*cos50 - bigr*(1-cos10),0,mPaint);
         canvas.drawLine(-75,-50,75,-50,mPaint);
         canvas.drawLine(-75,50,75,50,mPaint);

@@ -47,7 +47,7 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:layout_height="wrap_content">
 
                 <Chronometer
                     android:layout_width="wrap_content"
@@ -55,6 +55,7 @@
                     android:id="@+id/chronometer"
                     android:format="@string/chronometer_format"
                     android:textSize="34dp"
+                    android:textColor="@color/colorAccent"
                     android:layout_toRightOf="@id/map"
                     android:layout_marginLeft="4dp"
                     android:layout_alignBaseline="@+id/map"
@@ -72,7 +73,7 @@
                 android:id="@+id/textview"
                 android:textSize="35dp"
                 android:text="Distance:"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorBackground"
                 />
 
             <TextView
@@ -90,6 +91,12 @@
                     android:layout_height="wrap_content"
                     android:text="Auto Connect"
                     android:id="@+id/reConnectSwitch" />
+
+                <com.example.hongu.apaapa.DirectionView
+                    android:layout_width="70dp"
+                    class="com.example.hongu.apaapa.DirectionView"
+                    android:id="@+id/direction"
+                    android:layout_height="70dp" />
 
             </LinearLayout>
     </FrameLayout>

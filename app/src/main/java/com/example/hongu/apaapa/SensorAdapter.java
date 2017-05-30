@@ -33,6 +33,10 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
         return ininR;
     }
 
+    public float[] getOutR() {
+        return outR;
+    }
+
     private float[] ininR = new float[MATRIX_SIZE];
     /* センサーの値 */
     private float[] orientationValues   = new float[3];
@@ -224,9 +228,6 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
 //                System.out.println("outR["+i+"]: " + outR[i]);
 //                System.out.println("ininR["+i+"]: " + ininR[i]);
 //            }
-
-
-
 
             SensorManager.getOrientation(ininR, orientationValues);
 
