@@ -63,6 +63,7 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.File;
@@ -882,6 +883,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // マーカー設定
         mMap.clear();
         latlng = new LatLng(location.getLatitude(), location.getLongitude());
+        LatLng Chikubu = new LatLng(35.423196, 136.144068);
+        LatLng Oki = new LatLng(35.2079, 136.068244);
 
         options.position(latlng);
         // ランチャーアイコン
@@ -918,6 +921,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 drawTrace(latlng);
                 //走行距離を累積
                 sumDistance();
+
+                // 竹生島となんちゃら島への直線を描画
+                PolylineOptions OkiOptions = new PolylineOptions()
+                        .add(latlng)
+                        .add(Oki);
+
+                PolylineOptions ChikubuOptions = new PolylineOptions()
+                        .add(latlng)
+                        .add(Chikubu);
+
+                Polyline Okiline = mMap.addPolyline(OkiOptions);
+                Polyline Tikubuline = mMap.addPolyline(ChikubuOptions);
 
                 Location.distanceBetween(Platform.latitude,Platform.longitude, latlng.latitude, latlng.longitude, dista);
                 currentCircle.radius(dista[0]);
