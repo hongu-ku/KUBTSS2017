@@ -776,18 +776,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         .center(Platform)
                 .radius(10000)
                 .strokeColor(Color.BLUE)
-                .strokeWidth(1.0f); // In meters
+                .strokeWidth(2.0f); // In meters
 
         circleOptions1 = new CircleOptions()
                 .center(Platform)
                 .radius(20000)
                 .strokeColor(Color.BLUE)
-                .strokeWidth(1.0f); // In meters
+                .strokeWidth(2.0f); // In meters
 
         currentCircle = new CircleOptions()
                 .center(Platform)
                 .strokeColor(Color.GREEN)
-                .strokeWidth(1.1f);
+                .strokeWidth(3);
 
 // Get back the mutable Circle
         mMap.addCircle(circleOptions);
@@ -891,14 +891,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .anchor(0.5f, 0.5f)
                 .rotation(rad2deg( fAttitude[0] ) + 90));
 
-        Location.distanceBetween(Platform.latitude, Platform.longitude,
-                mRunList.get(i).latitude, mRunList.get(i).longitude,dista);
-
-        currentCircle.radius(dista[0]);
 
         mMap.addCircle(circleOptions);
         mMap.addCircle(circleOptions1);
-        mMap.addCircle(currentCircle);
+
         mMap.addMarker(new MarkerOptions().position(Platform));
 
 
@@ -922,6 +918,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 drawTrace(latlng);
                 //走行距離を累積
                 sumDistance();
+
+                Location.distanceBetween(Platform.latitude,Platform.longitude, latlng.latitude, latlng.longitude, dista);
+                currentCircle.radius(dista[0]);
+                mMap.addCircle(currentCircle);
+
             }
         }
     }
@@ -950,15 +951,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Straight distance
         StraightMeter = 0.0;
         float[] straight = new float[3];
+
+
         int i = 1;
         while (i < mRunList.size()) {
             results[0] = 0;
             Location.distanceBetween(mRunList.get(i - 1).latitude, mRunList.get(i - 1).longitude,
                     mRunList.get(i).latitude, mRunList.get(i).longitude, results);
             Location.distanceBetween(mRunList.get(0).latitude, mRunList.get(0).longitude, mRunList.get(i).latitude, mRunList.get(i).longitude, straight);
+
             mMeter += results[0];
             StraightMeter = straight[0];
-            //
+
             i++;
         }
         //distanceBetweenの距離はメートル単位

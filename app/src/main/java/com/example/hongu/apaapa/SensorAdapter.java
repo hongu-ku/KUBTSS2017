@@ -89,7 +89,11 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
     float sin;
     float cos;
 
-    float[] rot = new float[9];
+    float[] rotx = new float[9];
+    float[] rotz = new float[9];
+
+    // TODO: タブレットマウントのYaw方向のニュートラルを入力
+    float Yawneu=0;
 
     public void setPitchneutral(float pitchneu) {
         Pitchneutral = pitchneu;
@@ -188,16 +192,28 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
             cos = (float) Math.cos(rad);
             //System.out.println("rad="+sin);
 
+//            x軸回転のパラメータ
+            rotx[0] = 1;
+            rotx[1] = 0;
+            rotx[2] = 0;
+            rotx[3] = 0;
+            rotx[4] = cos;
+            rotx[5] = -sin;
+            rotx[6] = 0;
+            rotx[7] = sin;
+            rotx[8] = cos;
 
-            rot[0] = 1;
-            rot[1] = 0;
-            rot[2] = 0;
-            rot[3] = 0;
-            rot[4] = cos;
-            rot[5] = -sin;
-            rot[6] = 0;
-            rot[7] = sin;
-            rot[8] = cos;
+//            z軸回転のパラメータ
+            rotz[0]=(float) Math.cos(Yawneu);
+            rotz[2]=(float) -Math.sin(Yawneu);
+            rotz[3]=0;
+            rotz[4]=(float) Math.sin(Yawneu);
+            rotz[5]=(float) Math.cos(Yawneu);
+            rotz[6]=0;
+            rotz[7]=0;
+            rotz[8]=0;
+            rotz[9]=1;
+
 
             SensorManager.getRotationMatrix(inR, null, accelerometerValues, magneticValues);
 
@@ -222,7 +238,7 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
             }
 
 
-            MatrixMultiply(outR, rot, 3, ininR);
+            MatrixMultiply(outR, rotx, 3, ininR);
 
 //            for(int i=0; i<9; i++) {
 //                System.out.println("outR["+i+"]: " + outR[i]);
