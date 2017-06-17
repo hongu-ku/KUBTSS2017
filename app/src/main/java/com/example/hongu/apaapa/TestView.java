@@ -81,7 +81,7 @@ public class TestView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.scale(1.7f,1.7f);
+        canvas.scale(1.65f,1.65f);
         canvas.translate(155, 155);
 
         mPaint.setStyle(Paint.Style.STROKE);

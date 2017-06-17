@@ -106,18 +106,18 @@ public class GraphView extends View {
 
         paint2.setColor(Color.BLACK);
         paint2.setStrokeWidth(8);
-        paint2.setTextSize(200);
+        paint2.setTextSize(195);
         paint2.setStyle(Paint.Style.FILL_AND_STROKE);
         paint2.setAntiAlias(true);
         //paint2.setTextAlign(Paint.Align.CENTER);
 
-        canvas.drawRect(0,0,340,250,paint1);
+        canvas.drawRect(0,0,330,250,paint1);
         if (type == 0) {
             canvas.drawText((int) v + "", 0, 170, paint2);
-            canvas.drawText(unit, 330, 200, paint1);
+            canvas.drawText(unit, 320, 200, paint1);
         }  else if (type == 1) {
             canvas.drawText(String.format("%.1f", v) + "", 0, 170, paint2);
-            canvas.drawText(unit, 330, 230, paint1);
+            canvas.drawText(unit, 320, 230, paint1);
         }
     }
 
