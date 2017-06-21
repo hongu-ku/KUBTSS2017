@@ -471,8 +471,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                    System.out.println("testviewはok?");
                     // 再描画
                     testView.invalidate();
-                directionView.setYaw(rad2deg(fAttitude[0]));
-                directionView.invalidate();
+                    directionView.setYaw(rad2deg(fAttitude[0]));
+                    directionView.invalidate();
             }
             public void onAccuracyChanged (Sensor sensor, int accuracy) {}
         };
@@ -490,15 +490,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    public void MatrixMultiply(float[] R, float[] L,int sizeR/*正方行列の次元*/, float[] outM) {
-        for (int j=0; j<sizeR*sizeR; j++)
-            outM[j] = 0;
-        for (int k=0; k<sizeR; k++) {
-            for (int i = 0; i < sizeR*sizeR; i++) {
-                outM[i] +=R[(i/sizeR) * sizeR + k] *L[i%sizeR + sizeR*k] ;
-            }
-        }
-    }
+//    public void MatrixMultiply(float[] R, float[] L,int sizeR/*正方行列の次元*/, float[] outM) {
+//        for (int j=0; j<sizeR*sizeR; j++)
+//            outM[j] = 0;
+//        for (int k=0; k<sizeR; k++) {
+//            for (int i = 0; i < sizeR*sizeR; i++) {
+//                outM[i] +=R[(i/sizeR) * sizeR + k] *L[i%sizeR + sizeR*k] ;
+//            }
+//        }
+//    }
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -788,7 +788,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         currentCircle = new CircleOptions()
                 .center(Platform)
                 .strokeColor(Color.GREEN)
-                .strokeWidth(3);
+                .strokeWidth(3.0f);
 
 // Get back the mutable Circle
         mMap.addCircle(circleOptions);
@@ -900,8 +900,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.addMarker(new MarkerOptions().position(Platform));
 
-
-
         if (mStart) {
             if (mFirst) {
                 CameraPosition cameraposition = new CameraPosition.Builder()
@@ -925,14 +923,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // 竹生島となんちゃら島への直線を描画
                 PolylineOptions OkiOptions = new PolylineOptions()
                         .add(latlng)
-                        .add(Oki);
+                        .add(Oki)
+                        .width(2.5f);
 
                 PolylineOptions ChikubuOptions = new PolylineOptions()
                         .add(latlng)
-                        .add(Chikubu);
+                        .add(Chikubu)
+                        .width(2.5f);
 
-                Polyline Okiline = mMap.addPolyline(OkiOptions);
-                Polyline Tikubuline = mMap.addPolyline(ChikubuOptions);
+                mMap.addPolyline(OkiOptions);
+                mMap.addPolyline(ChikubuOptions);
 
                 Location.distanceBetween(Platform.latitude,Platform.longitude, latlng.latitude, latlng.longitude, dista);
                 currentCircle.radius(dista[0]);

@@ -28,6 +28,7 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
     private float[]  inR = new float[MATRIX_SIZE];
     private float[] outR = new float[MATRIX_SIZE];
     private float[]    I = new float[MATRIX_SIZE];
+    private float[] nowR = new float[MATRIX_SIZE];
 
     public float[] getIninR() {
         return ininR;
@@ -90,10 +91,12 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
     float cos;
 
     float[] rotx = new float[9];
-    float[] rotz = new float[9];
+      float[] rotz = new float[9];
 
     // TODO: タブレットマウントのYaw方向のニュートラルを入力
-    float Yawneu=0;
+    // TODO: 左側面につけるのであれば-●●で記入(radで記入)
+    double Yawdeg = -30;
+    float Yawneu=(float) Math.toRadians(Yawdeg);
 
     public void setPitchneutral(float pitchneu) {
         Pitchneutral = pitchneu;
@@ -205,14 +208,14 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
 
 //            z軸回転のパラメータ
             rotz[0]=(float) Math.cos(Yawneu);
-            rotz[2]=(float) -Math.sin(Yawneu);
-            rotz[3]=0;
-            rotz[4]=(float) Math.sin(Yawneu);
-            rotz[5]=(float) Math.cos(Yawneu);
+            rotz[1]=(float) -Math.sin(Yawneu);
+            rotz[2]=0;
+            rotz[3]=(float) Math.sin(Yawneu);
+            rotz[4]=(float) Math.cos(Yawneu);
+            rotz[5]=0;
             rotz[6]=0;
             rotz[7]=0;
-            rotz[8]=0;
-            rotz[9]=1;
+            rotz[8]=1;
 
 
             SensorManager.getRotationMatrix(inR, null, accelerometerValues, magneticValues);
@@ -233,13 +236,9 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
             //SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_X, SensorManager.AXIS_MINUS_Y, outR);//上ボート取付縦表示
             //SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_X, SensorManager.AXIS_Y, outR);//下ボート取付縦表示
 
-            for (int j=0; j<9; j++){
-                ininR[j] = 0;
-            }
 
-
-            MatrixMultiply(outR, rotx, 3, ininR);
-
+            MatrixMultiply(outR, rotx, 3, nowR);
+            MatrixMultiply(nowR, rotz, 3, ininR);
 //            for(int i=0; i<9; i++) {
 //                System.out.println("outR["+i+"]: " + outR[i]);
 //                System.out.println("ininR["+i+"]: " + ininR[i]);
@@ -260,9 +259,12 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
     }
 
     public void MatrixMultiply(float[] R, float[] L,int sizeR/*正則行列の次元*/, float[] outM) {
-        for (int k=0; k<sizeR; k++) {
-            for (int i = 0; i < sizeR*sizeR; i++) {
-                outM[i] +=R[(i/sizeR) * sizeR + k] *L[i%sizeR + sizeR*k] ;
+        for (int j=0; j<9; j++)
+            outM[j] = 0;
+
+        for (int k = 0; k < sizeR; k++) {
+            for (int i = 0; i < sizeR * sizeR; i++) {
+                outM[i] += R[(i / sizeR) * sizeR + k] * L[i % sizeR + sizeR * k];
             }
         }
     }
@@ -270,8 +272,6 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
     int radianToDegree(float rad){
         return (int) Math.toDegrees(rad);
     }
-
-
 
     @Override
     public void onLocationChanged(Location location) {
