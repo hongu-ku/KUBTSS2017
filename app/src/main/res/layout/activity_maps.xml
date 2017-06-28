@@ -28,7 +28,7 @@
             <fragment
                 android:id="@+id/map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_height="400dp"
+                android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 tools:context="com.example.hongu.apaapa.MapsActivity"
                 sample:cameraTargetLat="35.025874"
@@ -73,7 +73,7 @@
                 android:id="@+id/textview"
                 android:textSize="35dp"
                 android:text="Distance:"
-                android:textColor="@color/colorBackground"
+                android:textColor="@color/colorAccent"
                 />
 
             <TextView
@@ -85,12 +85,12 @@
                 android:textColor="@color/colorAccent"
                  />
 
-                <Switch
-                    android:checked="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Auto Connect"
-                    android:id="@+id/reConnectSwitch" />
+                <!--<Switch-->
+                    <!--android:checked="true"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Auto Connect"-->
+                    <!--android:id="@+id/reConnectSwitch" />-->
 
                 <com.example.hongu.apaapa.DirectionView
                     android:layout_width="70dp"

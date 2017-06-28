@@ -142,6 +142,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     CircleOptions currentCircle;
 
     float Pitchneu = 0;
+    float Rollneu = 0;
     float[] save = new float[3];
 
     MarkerOptions options = new MarkerOptions();
@@ -282,13 +283,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mTextSensorViewThread = new TextSensorViewThread(mSensorAdapter, mReceivedDataAdapter);
         mTextSensorViewThread.start();
-        Switch connectSwitch = (Switch) findViewById(R.id.reConnectSwitch);
-        connectSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mReceivedDataAdapter.setReconnection(isChecked);
-            }
-        });
+        mReceivedDataAdapter.setReconnection(true);
+//        Switch connectSwitch = (Switch) findViewById(R.id.reConnectSwitch);
+//        connectSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                mReceivedDataAdapter.setReconnection(isChecked);
+//            }
+//        });
 
         if (mCloudLoggerService == null) {
             url = "http://quatronic.php.xdomain.jp/birdman/writer.php";
@@ -321,6 +323,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        tb.setChecked(false);
 
         //ボタンが押された時の動き
+        //TODO: ボタンを小さくして右上に表示
         startbtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -336,6 +339,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     f++;
                     i=val;
                     //val = numberPicker.getValue();
+                    // TODO: NumberPickerの廃止
                     mCloudLoggerAdapter.setCount(val);
                     startbtn.setText("STOP");
                     Toast.makeText(getApplicationContext(),""+val, Toast.LENGTH_SHORT).show();
@@ -480,11 +484,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         testView.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
-                testView.setPitch1(rad2deg(oridinalAttitude[1]));
+                //testView.setPitch1(rad2deg(oridinalAttitude[1]));
                 Pitchneu = oridinalAttitude[1];
+                Rollneu = oridinalAttitude[2];
                 mSensorAdapter.setPitchneutral(Pitchneu);
+                // TODO:ロールのニュートラル調整がボタンでできてしまっていいのだろうか
+                mSensorAdapter.setRollneutral(Rollneu);
                 System.out.println("debug " + testView.getPitch1());
                 testView.invalidate();
+                System.out.println("oridinal = " + oridinalAttitude[2]);
+                System.out.println("f = " + fAttitude[2]);
                 return true; //trueの場合はonClickListenerを返さない？
             }
         });
@@ -738,6 +747,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMapLongClick(LatLng longpushLocation) {
                 try {
+                    // TODO: 長押し時のzoom値の変更
                     CameraPosition cameraPosition = new CameraPosition.Builder()
                             .target(latlng).zoom(18).bearing(0).build();
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -776,22 +786,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         circleOptions = new CircleOptions()
         .center(Platform)
                 .radius(10000)
-                .strokeColor(Color.BLUE)
-                .strokeWidth(2.0f); // In meters
+                .strokeColor(Color.RED)
+                .strokeWidth(4); // In meters
 
         circleOptions1 = new CircleOptions()
                 .center(Platform)
                 .radius(20000)
-                .strokeColor(Color.BLUE)
-                .strokeWidth(2.0f); // In meters
+                .strokeColor(Color.RED)
+                .strokeWidth(4); // In meters
 
         currentCircle = new CircleOptions()
                 .center(Platform)
                 .strokeColor(Color.GREEN)
-                .strokeWidth(3.0f);
+                .strokeWidth(4);
 
 // Get back the mutable Circle
         mMap.addCircle(circleOptions);
+        mMap.addCircle(circleOptions1);
 
             // DangerousなPermissionはリクエストして許可をもらわないと使えない(Android6以降？)
 //        if (ActivityCompat.checkSelfPermission(this, Manifest.permisson.ACCESS_FINE_LOCATION) !=
@@ -902,6 +913,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (mStart) {
             if (mFirst) {
+                // TODO: 初めのzoom値の変更
                 CameraPosition cameraposition = new CameraPosition.Builder()
                         .target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(18)
                         .bearing(0).build();
@@ -920,16 +932,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //走行距離を累積
                 sumDistance();
 
-                // 竹生島となんちゃら島への直線を描画
+                // TODO: 竹生島と沖島への直線を描画
                 PolylineOptions OkiOptions = new PolylineOptions()
                         .add(latlng)
                         .add(Oki)
-                        .width(2.5f);
+                        .width(4);
 
                 PolylineOptions ChikubuOptions = new PolylineOptions()
                         .add(latlng)
                         .add(Chikubu)
-                        .width(2.5f);
+                        .width(4);
 
                 mMap.addPolyline(OkiOptions);
                 mMap.addPolyline(ChikubuOptions);

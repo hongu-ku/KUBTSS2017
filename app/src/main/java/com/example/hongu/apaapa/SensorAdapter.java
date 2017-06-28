@@ -29,6 +29,7 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
     private float[] outR = new float[MATRIX_SIZE];
     private float[]    I = new float[MATRIX_SIZE];
     private float[] nowR = new float[MATRIX_SIZE];
+    private float[] nownowR = new float[MATRIX_SIZE];
 
     public float[] getIninR() {
         return ininR;
@@ -85,24 +86,30 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
 
     float deg;
     double rad;
+    double radRoll;
 
 
     float sin;
     float cos;
 
     float[] rotx = new float[9];
-      float[] rotz = new float[9];
+    float[] rotz = new float[9];
+    float[] roty = new float[9];
 
     // TODO: タブレットマウントのYaw方向のニュートラルを入力
-    // TODO: 左側面につけるのであれば-●●で記入(radで記入)
-    double Yawdeg = -30;
+    // TODO: 左側面につけるのであれば-●●で記入(degで記入)
+    double Yawdeg = -6.5;
     float Yawneu=(float) Math.toRadians(Yawdeg);
 
     public void setPitchneutral(float pitchneu) {
         Pitchneutral = pitchneu;
     }
+    public void setRollneutral(float rollneu) {
+        Rollneutral = rollneu;
+    }
 
     private float Pitchneutral = 0;
+    private float Rollneutral = 0;
 
     public int getGpsCnt(){return gpsCnt;}
     public int getTestCnt(){
@@ -206,6 +213,19 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
             rotx[7] = sin;
             rotx[8] = cos;
 
+//            y軸回転のパラメータ
+            //よーわからんけど中身マイナス
+            roty[0] = (float)Math.cos(-Rollneutral);
+            roty[1] = 0;
+            roty[2] = (float)Math.sin(-Rollneutral);
+            roty[3] = 0;
+            roty[4] = 1;
+            roty[5] = 0;
+            roty[6] = (float)-Math.sin(-Rollneutral);
+            roty[7] = 0;
+            roty[8] = (float)Math.cos(-Rollneutral);
+
+
 //            z軸回転のパラメータ
             rotz[0]=(float) Math.cos(Yawneu);
             rotz[1]=(float) -Math.sin(Yawneu);
@@ -238,7 +258,8 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
 
 
             MatrixMultiply(outR, rotx, 3, nowR);
-            MatrixMultiply(nowR, rotz, 3, ininR);
+            MatrixMultiply(nowR,roty,3,nownowR);
+            MatrixMultiply(nownowR, rotz, 3, ininR);
 //            for(int i=0; i<9; i++) {
 //                System.out.println("outR["+i+"]: " + outR[i]);
 //                System.out.println("ininR["+i+"]: " + ininR[i]);
