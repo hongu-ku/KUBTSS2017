@@ -22,7 +22,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp">
+            android:layout_height="430dp">
 
 
             <fragment
@@ -49,23 +49,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Chronometer
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/chronometer"
-                    android:format="@string/chronometer_format"
-                    android:textSize="34dp"
-                    android:textColor="@color/colorAccent"
-                    android:layout_toRightOf="@id/map"
-                    android:layout_marginLeft="4dp"
-                    android:layout_alignBaseline="@+id/map"
-                    />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/textViewStatus" />
+                    <Chronometer
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/chronometer"
+                        android:format="@string/chronometer_format"
+                        android:textSize="34dp"
+                        android:textColor="@color/colorAccent"
+                        android:layout_toRightOf="@id/map"
+                        android:layout_marginLeft="4dp"
+                        android:layout_alignBaseline="@+id/map"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:text="S"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:textSize="20dp"
+                        android:id="@+id/startbtn" />
+                </LinearLayout>
 
                 <TextView
                 android:layout_width="wrap_content"
@@ -98,6 +105,12 @@
                     android:id="@+id/direction"
                     android:layout_height="70dp" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/textViewStatus" />
+
             </LinearLayout>
     </FrameLayout>
 
@@ -107,44 +120,6 @@
         android:layout_height="180dp"
             android:layout_marginTop="20dp">
 
-        <com.example.hongu.apaapa.GraphView
-            android:layout_width="190dp"
-            android:layout_height="wrap_content"
-            class="com.example.hongu.apaapa.GraphView"
-            android:id="@+id/rpm"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            sample:x0= "50"
-            sample:y0= "100"
-            sample:vmin= "0"
-            sample:vmax= "150"
-            sample:unit= "RPM"
-            sample:title= "Cadence"
-            sample:type="0">
-        </com.example.hongu.apaapa.GraphView>
-
-        <com.example.hongu.apaapa.GraphView
-            android:layout_width="190dp"
-            android:layout_height="wrap_content"
-            class="com.example.hongu.apaapa.GraphView"
-            android:id="@+id/ult"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            sample:x0= "50"
-            sample:y0= "100"
-            sample:vmin= "0"
-            sample:vmax= "20"
-            sample:unit= "cm"
-            sample:title= "Ultsonic"
-            sample:type="0"
-            android:layout_marginLeft="225dp">
-        </com.example.hongu.apaapa.GraphView>
-    </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="182dp">
 
             <com.example.hongu.apaapa.GraphView
                 android:layout_width="190dp"
@@ -161,6 +136,50 @@
                 sample:title= "機速"
                 sample:type="1">
             </com.example.hongu.apaapa.GraphView>
+
+
+            <com.example.hongu.apaapa.GraphView
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                class="com.example.hongu.apaapa.GraphView"
+                android:id="@+id/rpm"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                sample:x0= "50"
+                sample:y0= "100"
+                sample:vmin= "0"
+                sample:vmax= "150"
+                sample:unit= "RPM"
+                sample:title= "Cadence"
+                sample:type="0"
+                android:layout_marginLeft="225dp">
+            </com.example.hongu.apaapa.GraphView>
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="182dp">
+
+            <com.example.hongu.apaapa.GraphView
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                class="com.example.hongu.apaapa.GraphView"
+                android:id="@+id/ult"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                sample:x0= "50"
+                sample:y0= "100"
+                sample:vmin= "0"
+                sample:vmax= "20"
+                sample:unit= "cm"
+                sample:title= "Ultsonic"
+                sample:type="0"
+                >
+            </com.example.hongu.apaapa.GraphView>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -201,7 +220,8 @@
 
         </LinearLayout>
 
-    <LinearLayout
+        <!--TF用-->
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:baselineAligned="false">
@@ -222,7 +242,7 @@
 
 
     </LinearLayout>
-
+-->
 </LinearLayout>
 
     <LinearLayout
@@ -236,7 +256,7 @@
             class="com.example.hongu.apaapa.TestView"
             android:id="@+id/view5"
             android:layout_marginLeft="109dp"
-            android:layout_marginTop="390dp"
+            android:layout_marginTop="470dp"
             android:layout_weight="0.04" />
 
     </LinearLayout>

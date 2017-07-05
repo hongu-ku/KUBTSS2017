@@ -19,7 +19,7 @@ public class CloudLoggerService {
     private PrintStream printStream;
     private List<LinkedList<String>> dataList;
     private URL Url;
-    private int count;
+    private int count=0;
 
     public CloudLoggerService(String url) {
         dataList = new LinkedList<LinkedList<String>>();

@@ -83,6 +83,8 @@ public class TestView extends View {
         super.onDraw(canvas);
         canvas.scale(1.65f,1.65f);
         canvas.translate(155, 155);
+        // TODO:傾けるなどできるのだろうか
+        canvas.rotate(-10);
 
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setAntiAlias(true);
@@ -192,7 +194,7 @@ public class TestView extends View {
 //        canvas.drawLine(-150,0,150,0, paint);
 //        canvas.save();
 //
-////        回転する場所の描画
+//        回転する場所の描画
 //        canvas.rotate( -Yaw );
 //        canvas.drawLine(0,-150,0,150,paint1);
 //        canvas.drawLine(-100,0,100,0,mPaint);
@@ -200,8 +202,8 @@ public class TestView extends View {
 //        canvas.drawLine(-75,50,75,50,mPaint);
 //
 //        //canvas.drawRect(rect, mPaint);
-////        canvas.save();
-////        これ以降は前後する場所の描画
+//        canvas.save();
+//        これ以降は前後する場所の描画
 //        if(-Pitch * 4 <=150 && -Pitch * 4 >= -150)
 //            canvas.translate(0, - Pitch * 4 );
 //        else if (-Pitch * 4 > 150)
@@ -210,7 +212,7 @@ public class TestView extends View {
 //            canvas.translate(0,-150);
 //        canvas.drawLine(-100,0,100,0,paint1);
 //
-////        これ以降は動かない
+//        これ以降は動かない
 //        canvas.restore();
 //        canvas.drawLine(0, -155, 0, -145, mPaint);
 //        canvas.drawLine(-155 * sin10, -155 * cos10, -145 * sin10, -145 * cos10, mPaint);

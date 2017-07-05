@@ -114,10 +114,10 @@ public class GraphView extends View {
         canvas.drawRect(0,0,330,250,paint1);
         if (type == 0) {
             canvas.drawText((int) v + "", 0, 170, paint2);
-            canvas.drawText(unit, 320, 200, paint1);
+            canvas.drawText(unit, 320, 240, paint1);
         }  else if (type == 1) {
             canvas.drawText(String.format("%.1f", v) + "", 0, 170, paint2);
-            canvas.drawText(unit, 320, 230, paint1);
+            canvas.drawText(unit, 320, 240, paint1);
         }
     }
 

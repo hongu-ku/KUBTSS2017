@@ -124,7 +124,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Chronometer mChronometer;
     private int f = 0;
     private int i = 0;
-    private int val = 1;
+//    private int val = 1;
 
     private double Kyotolat = 35.025874;
     private double Kyotolnt = 135.780865;
@@ -240,13 +240,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         disText.setTextColor(Color.RED);
         straightText.setTextColor(Color.RED);
         // NumberPicker 設定
-        final NumberPicker numberPicker = (NumberPicker)findViewById(R.id.numberPicker);
-        numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+//        final NumberPicker numberPicker = (NumberPicker)findViewById(R.id.numberPicker);
+//        numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
-// 最大、最小を設定
-        numberPicker.setMaxValue(40);
-        numberPicker.setMinValue(1);
-        numberPicker.setValue(val);
+// 最大、最小を設定 TF
+//        numberPicker.setMaxValue(40);
+//        numberPicker.setMinValue(1);
+//        numberPicker.setValue(val);
 
 // 値を取得
         //val = numberPicker.getValue();
@@ -312,18 +312,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         final Button startbtn = (Button) findViewById(R.id.startbtn);
 
-        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                val = newVal;
-                System.out.println("debug:"+val);
-            }
-        });
+//        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//            @Override
+//            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+//                val = newVal;
+//                System.out.println("debug:"+val);
+//            }
+//        });
 
 //        tb.setChecked(false);
 
         //ボタンが押された時の動き
-        //TODO: ボタンを小さくして右上に表示
+        //ボタンを小さくして右上に表示
         startbtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -337,25 +337,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMeter = 0.0;
                     mRunList.clear();
                     f++;
-                    i=val;
+//                    i=val;
                     //val = numberPicker.getValue();
-                    // TODO: NumberPickerの廃止
-                    mCloudLoggerAdapter.setCount(val);
+                    // NumberPickerの廃止
+                    mCloudLoggerAdapter.setCount(1);
                     startbtn.setText("STOP");
-                    Toast.makeText(getApplicationContext(),""+val, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(),""+val, Toast.LENGTH_SHORT).show();
                 } else if (f == 1) {
-                    stopChronometer();
-                    mStop = true;
-                    mStart = false;
+//                    stopChronometer();
+//                    mStop = true;
+//                    mStart = false;
                     // [i].stopRunning();
-                    f=0;
-                    i = 0;
-                    mCloudLoggerAdapter.setCount(0);
-                    val++;
-                    numberPicker.setValue(val);
-                    startbtn.setText("START");
-                    disText.setText("Distance:");
-                    straightText.setText("Straight:");
+//                    f=0;
+//                    i = 0;
+//                    mCloudLoggerAdapter.setCount(0);
+//                    val++;
+//                    numberPicker.setValue(val);
+//                    startbtn.setText("START");
+//                    disText.setText("Distance:");
+//                    straightText.setText("Straight:");
                 }
             }
         });
@@ -749,7 +749,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 try {
                     // TODO: 長押し時のzoom値の変更
                     CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(latlng).zoom(18).bearing(0).build();
+                            .target(latlng).zoom(10).bearing(0).build();
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 } catch (NullPointerException e) {
                     // do nothing
@@ -894,8 +894,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // マーカー設定
         mMap.clear();
         latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        LatLng Chikubu = new LatLng(35.423196, 136.144068);
-        LatLng Oki = new LatLng(35.2079, 136.068244);
+
 
         options.position(latlng);
         // ランチャーアイコン
@@ -915,7 +914,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (mFirst) {
                 // TODO: 初めのzoom値の変更
                 CameraPosition cameraposition = new CameraPosition.Builder()
-                        .target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(18)
+                        .target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(10)
                         .bearing(0).build();
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraposition));
                 Bundle args = new Bundle();
@@ -931,20 +930,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 drawTrace(latlng);
                 //走行距離を累積
                 sumDistance();
+                //竹生島と沖島への誘導線を描画
+                somePoly(latlng);
 
-                // TODO: 竹生島と沖島への直線を描画
-                PolylineOptions OkiOptions = new PolylineOptions()
-                        .add(latlng)
-                        .add(Oki)
-                        .width(4);
-
-                PolylineOptions ChikubuOptions = new PolylineOptions()
-                        .add(latlng)
-                        .add(Chikubu)
-                        .width(4);
-
-                mMap.addPolyline(OkiOptions);
-                mMap.addPolyline(ChikubuOptions);
 
                 Location.distanceBetween(Platform.latitude,Platform.longitude, latlng.latitude, latlng.longitude, dista);
                 currentCircle.radius(dista[0]);
@@ -966,6 +954,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             polyOptions.geodesic(false);
             mMap.addPolyline(polyOptions);
         }
+    }
+
+    private void somePoly(LatLng latlng) {
+        //竹生島と沖島への直線を描画
+        LatLng Chikubu = new LatLng(35.423196, 136.144068);
+        LatLng Oki = new LatLng(35.2079, 136.068244);
+        // TODO:進んでいる方向への誘導線を描画
+        LatLng Goal;
+        PolylineOptions OkiOptions = new PolylineOptions()
+                .add(latlng)
+                .add(Oki)
+                .width(4);
+
+        PolylineOptions ChikubuOptions = new PolylineOptions()
+                .add(latlng)
+                .add(Chikubu)
+                .width(4);
+
+        mMap.addPolyline(OkiOptions);
+        mMap.addPolyline(ChikubuOptions);
+
+        // 進んでいる方向への最短誘導線を描画
+        PolylineOptions Goto = new PolylineOptions()
+                .add(latlng)
+                .add(Platform)
+                .width(5)
+                .color(Color.RED)
+                .geodesic(true);
     }
 
     private void sumDistance() {
