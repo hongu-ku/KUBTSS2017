@@ -71,7 +71,8 @@
                         android:layout_width="40dp"
                         android:layout_height="match_parent"
                         android:textSize="20dp"
-                        android:id="@+id/startbtn" />
+                        android:id="@+id/startbtn"
+                        android:layout_marginRight="30dp" />
                 </LinearLayout>
 
                 <TextView
@@ -139,7 +140,7 @@
 
 
             <com.example.hongu.apaapa.GraphView
-                android:layout_width="190dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 class="com.example.hongu.apaapa.GraphView"
                 android:id="@+id/rpm"
@@ -152,7 +153,7 @@
                 sample:unit= "RPM"
                 sample:title= "Cadence"
                 sample:type="0"
-                android:layout_marginLeft="225dp">
+                android:layout_marginLeft="230dp">
             </com.example.hongu.apaapa.GraphView>
 
     </LinearLayout>
@@ -251,13 +252,12 @@
         android:weightSum="1">
 
         <view
-            android:layout_width="324dp"
             android:layout_height="405dp"
             class="com.example.hongu.apaapa.TestView"
             android:id="@+id/view5"
-            android:layout_marginLeft="109dp"
-            android:layout_marginTop="470dp"
-            android:layout_weight="0.04" />
+            android:layout_marginLeft="175dp"
+            android:layout_marginTop="465dp"
+            android:layout_width="250dp" />
 
     </LinearLayout>
 </FrameLayout>

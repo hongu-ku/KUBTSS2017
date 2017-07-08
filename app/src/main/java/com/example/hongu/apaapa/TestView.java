@@ -81,10 +81,10 @@ public class TestView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.scale(1.65f,1.65f);
-        canvas.translate(155, 155);
+        canvas.scale(1.6f,1.6f);
+        canvas.translate(105, 155);
         // TODO:傾けるなどできるのだろうか
-        canvas.rotate(-10);
+        canvas.rotate(10);
 
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setAntiAlias(true);
