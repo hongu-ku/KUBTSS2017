@@ -22,7 +22,8 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="430dp">
+            android:layout_weight="1.05"
+            android:layout_height="wrap_content">
 
 
             <fragment
@@ -256,8 +257,8 @@
             class="com.example.hongu.apaapa.TestView"
             android:id="@+id/view5"
             android:layout_marginLeft="175dp"
-            android:layout_marginTop="465dp"
-            android:layout_width="250dp" />
+            android:layout_marginTop="480dp"
+            android:layout_width="249dp" />
 
     </LinearLayout>
 </FrameLayout>

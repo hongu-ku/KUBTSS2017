@@ -926,17 +926,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //getLoaderManager().restartLoader(ADDRESSLOADER_ID, args, this);
                 mFirst = !mFirst;
             } else {
+                // 現在の円を引く
+                Location.distanceBetween(Platform.latitude,Platform.longitude, latlng.latitude, latlng.longitude, dista);
+                currentCircle.radius(dista[0]);
+                mMap.addCircle(currentCircle);
                 //移動線を描画
                 drawTrace(latlng);
                 //走行距離を累積
                 sumDistance();
                 //竹生島と沖島への誘導線を描画
-                somePoly(latlng);
+                somePoly(latlng,dista[0]);
 
-
-                Location.distanceBetween(Platform.latitude,Platform.longitude, latlng.latitude, latlng.longitude, dista);
-                currentCircle.radius(dista[0]);
-                mMap.addCircle(currentCircle);
 
             }
         }
@@ -956,7 +956,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void somePoly(LatLng latlng) {
+    private void somePoly(LatLng latlng, float a) {
+        //進行方向の最短距離
+        a=20000/a;
+        PolylineOptions MinOptions = new PolylineOptions()
+                .add(latlng)
+                .add(new LatLng(Platform.latitude-(Platform.latitude-latlng.latitude)*a, Platform.longitude-(Platform.longitude-latlng.longitude)*a))
+                .width(4);
         //竹生島と沖島への直線を描画
         LatLng Chikubu = new LatLng(35.423196, 136.144068);
         LatLng Oki = new LatLng(35.2079, 136.068244);
