@@ -98,7 +98,7 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
 
     // TODO: タブレットマウントのYaw方向のニュートラルを入力
     // TODO: 左側面につけるのであれば-●●で記入(degで記入)
-    double Yawdeg = -6.5;
+    double Yawdeg = -10.0;
     float Yawneu=(float) Math.toRadians(Yawdeg);
 
     public void setPitchneutral(float pitchneu) {
@@ -108,8 +108,9 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
         Rollneutral = rollneu;
     }
 
-    private float Pitchneutral = 0;
-    private float Rollneutral = 0;
+    // ニュートラル角度（rad)
+    private float Pitchneutral = 13;// 前倒しは正
+    private float Rollneutral = (float) Math.toRadians(8.5);
 
     public int getGpsCnt(){return gpsCnt;}
     public int getTestCnt(){
@@ -161,7 +162,8 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
         this.config = config;
 
         resetIntegralDistance();
-        setPlatformPoint(35.027578, 135.783206);//京都大学工学部電気総合館
+//        setPlatformPoint(35.027578, 135.783206);//京都大学工学部電気総合館
+        setPlatformPoint(35.294170,136.254422);
     }
 
     public void stopSensor() {

@@ -65,7 +65,6 @@ public class CloudLoggerService {
 
         while (!dataList.isEmpty()) {
             set();
-
             StringBuilder sb = new StringBuilder();
 
             int size = dataList.size();

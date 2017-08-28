@@ -81,10 +81,10 @@ public class TestView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.scale(1.6f,1.6f);
-        canvas.translate(105, 155);
+        canvas.scale(1.65f,1.65f);
+        canvas.translate(100, 160);
         // TODO:傾けるなどできるのだろうか
-        canvas.rotate(10);
+        canvas.rotate(8.5f);
 
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setAntiAlias(true);
@@ -126,9 +126,9 @@ public class TestView extends View {
             save = Yaw;
         }
         final double x =150*cos50 + bigr *(1+cos10);
-        if (save > 50 && save <130)
-            savelongi = (float) (x * Deg2sin(save) - Math.sqrt(x*x * Deg2sin(save)*Deg2sin(save) - x*x +bigr*bigr));
-        else {
+        if (save > 50 && save <130) {
+            savelongi = (float) (x * Deg2sin(save) - Math.sqrt(x * x * Deg2sin(save) * Deg2sin(save) - x * x + bigr * bigr));
+        } else {
             savelongi = 150;
         }
 

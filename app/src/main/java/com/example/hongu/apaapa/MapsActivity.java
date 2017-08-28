@@ -137,9 +137,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     TestView testView;
     LatLng latlng;
     LatLng Platform = new LatLng(35.294170,136.254422);
-    CircleOptions circleOptions;
-    CircleOptions circleOptions1;
+    CircleOptions circleOptions20km;
+    CircleOptions circleOptions10km;
+    CircleOptions circleOptions1km;
+    CircleOptions circleOptions2km;
+    CircleOptions circleOptions3km;
+    CircleOptions circleOptions4km;
+    CircleOptions circleOptions5km;
+
     CircleOptions currentCircle;
+
 
     float Pitchneu = 0;
     float Rollneu = 0;
@@ -337,11 +344,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMeter = 0.0;
                     mRunList.clear();
                     f++;
-//                    i=val;
+                    i=1;
                     //val = numberPicker.getValue();
                     // NumberPickerの廃止
                     mCloudLoggerAdapter.setCount(1);
-                    startbtn.setText("STOP");
+                    startbtn.setText("E");
 //                    Toast.makeText(getApplicationContext(),""+val, Toast.LENGTH_SHORT).show();
                 } else if (f == 1) {
 //                    stopChronometer();
@@ -741,6 +748,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        CameraPosition cameraPositions = new CameraPosition.Builder()
+                .target(Platform)
+                .bearing(0).zoom(10.8f).build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPositions));
+
 
         // 長押しのリスナーをセット
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -749,7 +761,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 try {
                     // TODO: 長押し時のzoom値の変更
                     CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(latlng).zoom(10).bearing(0).build();
+                            .target(latlng).zoom(10.8f).bearing(0).build();
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 } catch (NullPointerException e) {
                     // do nothing
@@ -783,17 +795,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //衛星写真
 //        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
-        circleOptions = new CircleOptions()
+        circleOptions10km = new CircleOptions()
         .center(Platform)
                 .radius(10000)
                 .strokeColor(Color.RED)
                 .strokeWidth(4); // In meters
 
-        circleOptions1 = new CircleOptions()
+        circleOptions20km = new CircleOptions()
                 .center(Platform)
                 .radius(20000)
                 .strokeColor(Color.RED)
                 .strokeWidth(4); // In meters
+
+        circleOptions1km = new CircleOptions()
+                .center(Platform)
+                .radius(1000)
+                .strokeColor(Color.BLACK)
+                .strokeWidth(2.5f); // In meters
+
+        circleOptions2km = new CircleOptions()
+                .center(Platform)
+                .radius(2000)
+                .strokeColor(Color.BLACK)
+                .strokeWidth(2.5f); // In meters
+
+        circleOptions3km = new CircleOptions()
+                .center(Platform)
+                .radius(3000)
+                .strokeColor(Color.BLACK)
+                .strokeWidth(2.5f); // In meters
+
+        circleOptions4km = new CircleOptions()
+                .center(Platform)
+                .radius(4000)
+                .strokeColor(Color.BLACK)
+                .strokeWidth(2.5f); // In meters
+
+        circleOptions5km = new CircleOptions()
+                .center(Platform)
+                .radius(5000)
+                .strokeColor(Color.RED)
+                .strokeWidth(3); // In meters
 
         currentCircle = new CircleOptions()
                 .center(Platform)
@@ -801,8 +843,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .strokeWidth(4);
 
 // Get back the mutable Circle
-        mMap.addCircle(circleOptions);
-        mMap.addCircle(circleOptions1);
+        mMap.addCircle(circleOptions1km);
+        mMap.addCircle(circleOptions2km);
+        mMap.addCircle(circleOptions3km);
+        mMap.addCircle(circleOptions4km);
+        mMap.addCircle(circleOptions5km);
+        mMap.addCircle(circleOptions20km);
+        mMap.addCircle(circleOptions10km);
 
             // DangerousなPermissionはリクエストして許可をもらわないと使えない(Android6以降？)
 //        if (ActivityCompat.checkSelfPermission(this, Manifest.permisson.ACCESS_FINE_LOCATION) !=
@@ -905,8 +952,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .rotation(rad2deg( fAttitude[0] ) + 90));
 
 
-        mMap.addCircle(circleOptions);
-        mMap.addCircle(circleOptions1);
+        mMap.addCircle(circleOptions1km);
+        mMap.addCircle(circleOptions2km);
+        mMap.addCircle(circleOptions3km);
+        mMap.addCircle(circleOptions4km);
+        mMap.addCircle(circleOptions5km);
+        mMap.addCircle(circleOptions20km);
+        mMap.addCircle(circleOptions10km);
 
         mMap.addMarker(new MarkerOptions().position(Platform));
 
@@ -914,7 +966,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (mFirst) {
                 // TODO: 初めのzoom値の変更
                 CameraPosition cameraposition = new CameraPosition.Builder()
-                        .target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(10)
+                        //.target(new LatLng(location.getLatitude(), location.getLongitude()))
+                        .zoom(10.8f)
+                        .target(new LatLng(Platform.latitude+(Platform.latitude-Kyotolat)/9, (Platform.longitude*3+Kyotolnt)/4))
                         .bearing(0).build();
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraposition));
                 Bundle args = new Bundle();
@@ -962,7 +1016,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         PolylineOptions MinOptions = new PolylineOptions()
                 .add(latlng)
                 .add(new LatLng(Platform.latitude-(Platform.latitude-latlng.latitude)*a, Platform.longitude-(Platform.longitude-latlng.longitude)*a))
-                .width(4);
+                .width(4)
+                .color(Color.RED);
         //竹生島と沖島への直線を描画
         LatLng Chikubu = new LatLng(35.423196, 136.144068);
         LatLng Oki = new LatLng(35.2079, 136.068244);
@@ -971,23 +1026,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         PolylineOptions OkiOptions = new PolylineOptions()
                 .add(latlng)
                 .add(Oki)
-                .width(4);
+                .width(3);
 
         PolylineOptions ChikubuOptions = new PolylineOptions()
                 .add(latlng)
                 .add(Chikubu)
-                .width(4);
+                .width(3);
 
         mMap.addPolyline(OkiOptions);
         mMap.addPolyline(ChikubuOptions);
+        mMap.addPolyline(MinOptions);
 
-        // 進んでいる方向への最短誘導線を描画
-        PolylineOptions Goto = new PolylineOptions()
-                .add(latlng)
-                .add(Platform)
-                .width(5)
-                .color(Color.RED)
-                .geodesic(true);
     }
 
     private void sumDistance() {

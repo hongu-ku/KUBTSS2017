@@ -18,7 +18,6 @@ public class CloudLoggerAdapter{
     public void setCount(int count) {
         Count = count;
     }
-
     private int Count;
 
     public void setPitchneu(float pitchneu) {
@@ -65,6 +64,7 @@ public class CloudLoggerAdapter{
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
+
                             data = new LinkedList<String>();
 
                             mCloudLoggerService.setCount(Count);
