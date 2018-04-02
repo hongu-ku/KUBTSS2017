@@ -369,57 +369,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mSensorEventListener = new SensorEventListener()
         {
             public void onSensorChanged (SensorEvent event) {
-                // センサの取得値をそれぞれ保存しておく
-//                switch( event.sensor.getType()) {
-//                    case Sensor.TYPE_ACCELEROMETER:
-//                        fAccell = event.values.clone();
-//                        break;
-//                    case Sensor.TYPE_MAGNETIC_FIELD:
-//                        fMagnetic = event.values.clone();
-//                        break;
-//                }
+                 センサの取得値をそれぞれ保存しておく
+                switch( event.sensor.getType()) {
+                    case Sensor.TYPE_ACCELEROMETER:
+                        fAccell = event.values.clone();
+                        break;
+                    case Sensor.TYPE_MAGNETIC_FIELD:
+                        fMagnetic = event.values.clone();
+                        break;
+                }
 
-                // fAccell と fMagnetic から傾きと方位角を計算する
-                //if( fAccell != null && fMagnetic != null ) {
-//                    // 回転行列を得る
-//                    float[] inR = new float[9];
-//
-//                    float deg = testView.getPitch1();
-//                    double rad = Math.toRadians(deg);
-//
-//                    float sin = (float) Math.sin(rad);
-//                    float cos = (float) Math.cos(rad);
-//
-//                    rot[0] = 1;
-//                    rot[1] = 0;
-//                    rot[2] = 0;
-//                    rot[3] = 0;
-//                    rot[4] = cos;
-//                    rot[5] = -sin;
-//                    rot[6] = 0;
-//                    rot[7] = sin;
-//                    rot[8] = cos;
-//
-//
-//
-//                    SensorManager.getRotationMatrix(
-//                            inR,
-//                            null,
-//                            fAccell,
-//                            fMagnetic );
-//
-//                    float[] ininR = new float[9];
-//
-//                    // ワールド座標とデバイス座標のマッピングを変換する
-//                    float[] outR = new float[9];
-//                    SensorManager.remapCoordinateSystem(
-//                            inR,
-//                            SensorManager.AXIS_X,  // デバイスx軸が地球の何軸になるか
-//                            SensorManager.AXIS_Z,  // デバイスy軸が地球の何軸になるか
-//                            outR );
-//                    // 姿勢を得る
-//                    // 回転行列をoutRにかける
-//                    MatrixMultiply(outR, rot, 3, ininR);
+                 fAccell と fMagnetic から傾きと方位角を計算する
+                if( fAccell != null && fMagnetic != null ) {
+                    // 回転行列を得る
+                    float[] inR = new float[9];
+
+                    float deg = testView.getPitch1();
+                    double rad = Math.toRadians(deg);
+
+                    float sin = (float) Math.sin(rad);
+                    float cos = (float) Math.cos(rad);
+
+                    rot[0] = 1;
+                    rot[1] = 0;
+                    rot[2] = 0;
+                    rot[3] = 0;
+                    rot[4] = cos;
+                    rot[5] = -sin;
+                    rot[6] = 0;
+                    rot[7] = sin;
+                    rot[8] = cos;
+
+
+
+                    SensorManager.getRotationMatrix(
+                            inR,
+                            null,
+                            fAccell,
+                            fMagnetic );
+
+                    float[] ininR = new float[9];
+
+                    // ワールド座標とデバイス座標のマッピングを変換する
+                    float[] outR = new float[9];
+                    SensorManager.remapCoordinateSystem(
+                            inR,
+                            SensorManager.AXIS_X,  // デバイスx軸が地球の何軸になるか
+                            SensorManager.AXIS_Z,  // デバイスy軸が地球の何軸になるか
+                            outR );
+                    // 姿勢を得る
+                    // 回転行列をoutRにかける
+                    MatrixMultiply(outR, rot, 3, ininR);
 
                     SensorManager.getOrientation(
                             mSensorAdapter.getIninR(),
@@ -499,39 +499,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-//    public void MatrixMultiply(float[] R, float[] L,int sizeR/*正方行列の次元*/, float[] outM) {
-//        for (int j=0; j<sizeR*sizeR; j++)
-//            outM[j] = 0;
-//        for (int k=0; k<sizeR; k++) {
-//            for (int i = 0; i < sizeR*sizeR; i++) {
-//                outM[i] +=R[(i/sizeR) * sizeR + k] *L[i%sizeR + sizeR*k] ;
-//            }
-//        }
-//    }
+    public void MatrixMultiply(float[] R, float[] L,int sizeR/*正方行列の次元*/, float[] outM) {
+        for (int j=0; j<sizeR*sizeR; j++)
+            outM[j] = 0;
+        for (int k=0; k<sizeR; k++) {
+            for (int i = 0; i < sizeR*sizeR; i++) {
+                outM[i] +=R[(i/sizeR) * sizeR + k] *L[i%sizeR + sizeR*k] ;
+            }
+        }
+    }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            Intent intent = new Intent(MapsActivity.this, SettingPrefActivity.class);
-//            startActivity(intent);
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(MapsActivity.this, SettingPrefActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 
     private class TextSensorViewThread extends Thread {
